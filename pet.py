@@ -138,6 +138,7 @@ class WhalePet:
         self.menu = tk.Menu(self.root, tearoff=0, font=('Microsoft YaHei', 10))
         self.pill_win = None      # 额度常显药丸
         self.summon_win = None    # 召唤按钮（贴 ZCode 底边）
+        self.summon_pos = None    # 召唤按钮位置（相对 ZCode，可拖拽）
         self.hidden = False       # petOn=False 时的隐藏（缩 1x1，不影响召唤按钮）
         self.canvas.bind('<Button-1>', self.on_press)
         self.canvas.bind('<B1-Motion>', self.on_drag)
@@ -249,13 +250,13 @@ class WhalePet:
                 self.pill_canvas.itemconfigure(self.pill_text, text=txt)
             except Exception:
                 pass
-        px, py = self.root.winfo_x(), self.root.winfo_y()
-        self.pill_win.geometry('170x30+' + str(int(px - 90)) + '+' + str(int(py + 14)))
         if not on:
             self.pill_win.withdraw()
         elif self.root.state() == 'normal':
             self.pill_win.deiconify()
-        # 召唤按钮：贴 ZCode 底边中央（输入栏旁），点击召唤/收起鲸鱼娘
+        # 召唤按钮：默认贴 ZCode 底边中央（输入栏旁），可拖拽记忆位置
+        if self.summon_pos is None:
+            self.summon_pos = [(left + right) // 2 - 22, bottom - 58]
         if self.summon_win is None:
             self.summon_win = tk.Toplevel(self.root)
             self.summon_win.overrideredirect(True)
@@ -266,15 +267,43 @@ class WhalePet:
             sc.pack()
             sc.create_oval(3, 3, 41, 41, fill='#16224a', outline='#4a5fc0', width=2)
             sc.create_text(22, 21, text='🐋', font=('Segoe UI Emoji', 15), fill='white')
-            sc.bind('<Button-1>', self.toggle_pet)
+            sc.bind('<ButtonPress-1>', self.summon_press)
+            sc.bind('<B1-Motion>', self.summon_drag, add='+')
+            sc.bind('<ButtonRelease-1>', self.summon_release, add='+')
             self._summon_btn_canvas = sc
             self.summon_win.geometry('44x44+0+0')
-        bx = (left + right) // 2 - 22
-        by = bottom - 58
-        if (int(bx), int(by)) != (self.summon_win.winfo_x(), self.summon_win.winfo_y()):
-            self.summon_win.geometry('44x44+' + str(int(bx)) + '+' + str(int(by)))
+        self.summon_pos[0] = min(max(self.summon_pos[0], 4), max(4, right - left - 48))
+        self.summon_pos[1] = min(max(self.summon_pos[1], 4), max(4, bottom - top - 48))
+        sx, sy = left + self.summon_pos[0], top + self.summon_pos[1]
+        if (int(sx), int(sy)) != (self.summon_win.winfo_x(), self.summon_win.winfo_y()):
+            self.summon_win.geometry('44x44+' + str(int(sx)) + '+' + str(int(sy)))
         if self.summon_win.state() != 'normal':
             self.summon_win.deiconify()
+        # 药丸贴召唤按钮上方（不遮挡鲸鱼娘）
+        px2, py2 = sx - 170 + 6, sy - 36
+        self.pill_win.geometry('170x30+' + str(int(px2)) + '+' + str(int(py2)))
+
+    def summon_press(self, e):
+        self._sdrag = (e.x_root, e.y_root)
+        self._sdrag_moved = False
+
+    def summon_drag(self, e):
+        if not getattr(self, '_sdrag', None) or not self.zwin:
+            return
+        dx, dy = e.x_root - self._sdrag[0], e.y_root - self._sdrag[1]
+        if dx or dy:
+            self._sdrag_moved = True
+            _, l, t, r, b = self.zwin
+            self.summon_pos[0] = min(max(self.summon_pos[0] + dx, 4), max(4, r - l - 48))
+            self.summon_pos[1] = min(max(self.summon_pos[1] + dy, 4), max(4, b - t - 48))
+            self.summon_win.geometry('44x44+' + str(int(l + self.summon_pos[0])) + '+' + str(int(t + self.summon_pos[1])))
+            self._sdrag = (e.x_root, e.y_root)
+
+    def summon_release(self, e):
+        moved = getattr(self, '_sdrag_moved', False)
+        self._sdrag = None
+        if not moved:
+            self.toggle_pet()
 
     def toggle_pet(self, e=None):
         # 从服务端读最新开关再翻转（不用 6s 轮询的旧缓存，避免连点打架）
@@ -428,6 +457,17 @@ class WhalePet:
             c.create_text(BUBBLE_W // 2, ty, text=f"DeepSeek ¥{ctx['balance']['totalBalance']:.2f} · 今日 ¥{ctx.get('todayUsage', 0):.2f}",
                           anchor='n', font=('Microsoft YaHei', 9), fill='#7a8bb8')
             ty += 18
+        meme_url = ctx.get('memeUrl')
+        if meme_url:
+            rel = meme_url.split('/api/assets/')[-1]
+            try:
+                mim = Image.open(os.path.join(ASSETS, rel.replace('/', os.sep))).convert('RGBA')
+                mim.thumbnail((BUBBLE_W - 40, 96), Image.LANCZOS)
+                self._bubble_meme_img = ImageTk.PhotoImage(mim)
+                c.create_image(BUBBLE_W // 2, ty + 4, image=self._bubble_meme_img, anchor='n')
+                ty += mim.height + 8
+            except Exception:
+                pass
         c.create_text(BUBBLE_W // 2, ty, text=custom_line or ctx.get('line', ''), anchor='n', justify='center',
                       font=('Microsoft YaHei', 9), fill='#4a5fc0', width=BUBBLE_W - 30)
 

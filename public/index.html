@@ -19,8 +19,8 @@
   #stage{width:360px;padding:18px;text-align:center;position:sticky;top:16px;align-self:flex-start}
   #charImg{max-width:300px;max-height:380px;transition:transform .22s cubic-bezier(.34,1.56,.64,1);transform-origin:50% 100%;cursor:pointer}
   #charImg.press{transform:scaleY(.9) scaleX(1.04)}
-  #bubble{margin:10px auto;min-height:44px;background:#fff;border:3px solid var(--navy);border-radius:14px;padding:8px 12px;color:var(--blue);font-weight:600;font-size:14px;max-width:300px}
-  #bubble img{max-width:260px;border-radius:8px;display:block;margin:0 auto}
+  #bubble{margin:10px auto;height:170px;background:#fff;border:3px solid var(--navy);border-radius:14px;padding:8px 12px;color:var(--blue);font-weight:600;font-size:14px;max-width:300px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box}
+  #bubble img{max-width:260px;max-height:146px;border-radius:8px;display:block;margin:0 auto}
   .row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:8px}
   .chip{border:1.5px solid var(--sub);border-radius:999px;padding:4px 12px;font-size:12px;cursor:pointer;background:#fff;color:#667}
   .chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
