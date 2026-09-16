@@ -34,7 +34,7 @@ ALLOWED_HOST = '127.0.0.1'  # 仅允许本机挂件服务
 
 TRANSPARENT = '#010203'
 PET_H = 190
-BUBBLE_W, BUBBLE_H = 330, 210
+BUBBLE_W, BUBBLE_H = 340, 252
 POLL_NET = int(os.environ.get('WHALE_POLL', '6'))
 
 _sr = secrets.SystemRandom()
@@ -342,6 +342,19 @@ class WhalePet:
                 self.behavior, self.behavior_until = 'gesture', now + 1.5
             else:
                 self.behavior, self.behavior_until = 'idle', now + rnd(*(bw.get('idleDur') or [4, 10]))
+        eating = self.ctx.get('state') == 'eating' and self.behavior == 'idle'
+        if eating:
+            # 干饭咀嚼循环：倾斜帧交替 + 上下颠（都是缓存帧/坐标移动，零重采样）
+            self.behavior = 'eat'
+        elif self.behavior == 'eat' and not eating:
+            self.behavior = 'idle'
+        if self.behavior == 'eat' and self.zwin:
+            tilt = 2 if int(time.time() * 3) % 2 == 0 else -2
+            key = self._eat_key(tilt)
+            bounce = bool(int(time.time() * 3) % 2)
+            self.render_keyed(key, bounce)
+            self.root.after(330, self.behave)
+            return
         if self.behavior == 'walk' and self.zwin:
             step = self.walk_dir * 3
             self.pos_x += step
@@ -359,6 +372,60 @@ class WhalePet:
     def render_soon(self, bounce=False):
         self._pending_bounce = bounce
         self.root.after(1, self.render_now)
+
+    def _eat_key(self, tilt):
+        ctx = self.ctx
+        rel = (ctx.get('imageUrl') or '').split('/api/assets/')[-1].split('?')[0]
+        accs = tuple(sorted((ctx.get('_settings') or {}).get('accessories') or []))
+        h = int(PET_H * float((ctx.get('_settings') or {}).get('petScale', 1.0)))
+        return (rel, h, self.walk_dir < 0, accs, tilt)
+
+    def _render_entry(self, rel, h, flip, accs, tilt):
+        entry = self.img_cache.get((rel, h, flip, accs, tilt))
+        if entry:
+            return entry
+        base = self.img_cache.get((rel, h, flip, accs, 0))
+        if tilt != 0 and base:
+            im = base[0].rotate(tilt, Image.NEAREST, expand=False)
+            entry = (im, ImageTk.PhotoImage(im))
+        else:
+            try:
+                prefix = 'characters/deepseek/'
+                char_rel = rel[len(prefix):] if rel.startswith(prefix) else rel
+                im = dressup.render_character(
+                    form=(self.ctx.get('_settings') or {}).get('form', 'semi-chibi'),
+                    accessory_ids=accs,
+                    state_image=char_rel.replace('/', os.sep))
+            except Exception as e:
+                print('dressup fallback:', e, flush=True)
+                im = Image.open(os.path.join(ASSETS, rel.replace('/', os.sep))).convert('RGBA')
+            w0, h0 = im.size
+            im = im.resize((max(1, int(w0 * h / h0)), h), Image.LANCZOS)
+            if flip:
+                im = im.transpose(Image.FLIP_LEFT_RIGHT)
+            entry = (im, ImageTk.PhotoImage(im))
+            if tilt == 0:
+                self.img_cache[(rel, h, flip, accs, 0)] = entry
+        if len(self.img_cache) > 40:
+            self.img_cache.pop(next(iter(self.img_cache)))
+        self.img_cache[(rel, h, flip, accs, tilt)] = entry
+        return entry
+
+    def render_keyed(self, key, bounce=False):
+        rel, h, flip, accs, tilt = key
+        if key == self.cur:
+            self.canvas.coords('char', 0, 6 if bounce else 0)
+            return
+        self.cur = key
+        try:
+            entry = self._render_entry(rel, h, flip, accs, tilt)
+            self.char_h = entry[0].height
+            self.root.geometry(f'{max(entry[0].width, 160)}x{self.char_h + 8}')
+            self.canvas.delete('char')
+            self.canvas.create_image(0, 6 if bounce else 0, image=entry[1], anchor='nw', tags='char')
+            self._cur_photo = entry[1]
+        except Exception as e:
+            print('render error:', e, flush=True)
 
     def render_now(self):
         ctx = self.ctx

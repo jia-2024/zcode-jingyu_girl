@@ -1,5 +1,7 @@
 # 🐋 鲸鱼娘桌宠 · Whale-chan Pet for ZCode
 
+> **声明：本项目全部编码与设计工作由 AI（GLM）完成；作者只提供了一个想法和素材网站，支持原版 DeepSeek 鲸鱼娘及其创作者。也欢迎大家用 AI 或亲手编写自己心目中的鲸鱼娘（GLM 娘）。**
+
 一只住在 ZCode 软件内部的鲸鱼娘桌宠：**GLM/DeepSeek 额度常显、对话消费记账、AI 生成表情包、换装饰品、性格系统、金币商店**。对标 [DeepSeek-Balance-Whale-Widget](https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Widget)（MIT）的功能口径，以 [Neko3000/deepseek-whalechan](https://github.com/Neko3000/deepseek-whalechan) 的角色设定为形象基准。
 
 > 本地运行，数据不出机器。桌宠行为零 token 消耗；仅「AI 生成表情包」调用你自己的智谱 API 余额。

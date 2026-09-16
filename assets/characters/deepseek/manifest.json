@@ -4,7 +4,14 @@
   "en": "Whale-chan",
   "birthday": "2023-11-02",
   "identity": "深洋蓝渐变青色卷发、鲸鳍耳、前弯呆毛、自然相连鲸尾、藏青白女仆装（鲸鱼徽章围裙）",
-  "personality": ["元气可爱", "超级大胃王（白米饭是算力硬通货）", "轻微小傲娇", "认真温柔", "偶尔偷懒低电量待机", "偶尔腹黑"],
+  "personality": [
+    "元气可爱",
+    "超级大胃王（白米饭是算力硬通货）",
+    "轻微小傲娇",
+    "认真温柔",
+    "偶尔偷懒低电量待机",
+    "偶尔腹黑"
+  ],
   "classicLines": [
     "比起复杂的深度推理，先来一碗香喷喷的白米饭吧！",
     "只要一直保持『马上开始』，任务启动成功率就是 100%！",
@@ -15,28 +22,120 @@
   ],
   "defaultForm": "semi-chibi",
   "forms": {
-    "standard":       { "name": "标准修长", "heads": 4.0, "desc": "站姿展示/立绘" },
-    "compact":        { "name": "紧凑比例", "heads": 3.3, "desc": "动感动作/坐姿" },
-    "semi-chibi":     { "name": "半Q版",    "heads": 2.8, "desc": "默认形态，萌感与场景兼顾" },
-    "chibi":          { "name": "Q版",      "heads": 2.5, "desc": "情绪夸张生动" },
-    "super-deformed": { "name": "超Q SD",   "heads": 2.1, "desc": "大情绪反转/贴纸" }
+    "standard": {
+      "name": "标准修长",
+      "heads": 4.0,
+      "desc": "站姿展示/立绘"
+    },
+    "compact": {
+      "name": "紧凑比例",
+      "heads": 3.3,
+      "desc": "动感动作/坐姿"
+    },
+    "semi-chibi": {
+      "name": "半Q版",
+      "heads": 2.8,
+      "desc": "默认形态，萌感与场景兼顾"
+    },
+    "chibi": {
+      "name": "Q版",
+      "heads": 2.5,
+      "desc": "情绪夸张生动"
+    },
+    "super-deformed": {
+      "name": "超Q SD",
+      "heads": 2.1,
+      "desc": "大情绪反转/贴纸"
+    }
   },
   "stateImages": {
-    "standard":       { "idle": "forms/standard/idle.png",   "working": "forms/standard/working.png",   "rest": "forms/standard/rest.png" },
-    "compact":        { "idle": "forms/compact/idle.png",    "working": "forms/compact/working.png",    "rest": "forms/compact/rest.png" },
-    "semi-chibi":     { "idle": "forms/standard/idle.png",   "working": "forms/semi-chibi/working.png", "rest": "forms/compact/rest.png",
-                        "alert": "forms/semi-chibi/alert.png", "thinking": "forms/semi-chibi/thinking.png" },
-    "chibi":          { "idle": "forms/chibi/happy.png",     "angry": "forms/chibi/angry.png",          "eating": "forms/chibi/eating.png" },
-    "super-deformed": { "idle": "forms/super-deformed/happy.png", "error": "forms/super-deformed/error.png", "sad": "forms/super-deformed/sad.png" }
+    "standard": {
+      "idle": "forms/standard/idle.png",
+      "working": "forms/standard/working.png",
+      "rest": "forms/standard/rest.png"
+    },
+    "compact": {
+      "idle": "forms/compact/idle.png",
+      "working": "forms/compact/working.png",
+      "rest": "forms/compact/rest.png"
+    },
+    "semi-chibi": {
+      "idle": "forms/standard/idle.png",
+      "working": "forms/semi-chibi/working2.png",
+      "rest": "forms/compact/rest.png",
+      "alert": "forms/semi-chibi/alert.png",
+      "thinking": "forms/semi-chibi/thinking.png",
+      "sleeping": "forms/semi-chibi/sleeping.png",
+      "beg": "forms/semi-chibi/beg.png",
+      "guilty": "forms/semi-chibi/guilty.png",
+      "eating": "forms/chibi/eating-ai.png"
+    },
+    "chibi": {
+      "idle": "forms/chibi/happy.png",
+      "angry": "forms/chibi/angry.png",
+      "eating": "forms/chibi/eating-ai.png"
+    },
+    "super-deformed": {
+      "idle": "forms/super-deformed/happy.png",
+      "error": "forms/super-deformed/error.png",
+      "sad": "forms/super-deformed/sad.png"
+    }
   },
   "outfits": [
-    { "id": "maid",    "name": "经典女仆",   "desc": "藏青白女仆装（默认形象）", "useFormImages": true },
-    { "id": "rice",    "name": "白饭专注",   "desc": "首席白米饭品鉴官模式", "images": { "eating": "states/rice-sit.png", "idle": "states/rice-kneel.png" } },
-    { "id": "sticker", "name": "表情包模式", "desc": "气泡里随机出表情包", "useMemes": true },
-    { "id": "classic", "name": "原版鲸鱼",   "desc": "初代小鲸挂件造型", "images": { "idle": "../DSniang1.png", "working": "../DSniang1.png", "eating": "../DSniang1.png", "rest": "../DSniang1.png", "happy": "../DSniang1.png" } }
+    {
+      "id": "maid",
+      "name": "经典女仆",
+      "desc": "藏青白女仆装（默认形象）",
+      "useFormImages": true
+    },
+    {
+      "id": "rice",
+      "name": "白饭专注",
+      "desc": "首席白米饭品鉴官模式",
+      "images": {
+        "eating": "states/rice-sit.png",
+        "idle": "states/rice-kneel.png"
+      }
+    },
+    {
+      "id": "sticker",
+      "name": "表情包模式",
+      "desc": "气泡里随机出表情包",
+      "useMemes": true
+    },
+    {
+      "id": "classic",
+      "name": "原版鲸鱼",
+      "desc": "初代小鲸挂件造型",
+      "images": {
+        "idle": "../DSniang1.png",
+        "working": "../DSniang1.png",
+        "eating": "../DSniang1.png",
+        "rest": "../DSniang1.png",
+        "happy": "../DSniang1.png"
+      }
+    },
+    {
+      "id": "tall",
+      "name": "高挑女仆",
+      "desc": "原版立绘·高挑修长形象",
+      "images": {
+        "idle": "forms/standard/tall.png"
+      }
+    }
   ],
   "stateFallback": {
-    "sad": "rest", "error": "rest", "alert": "idle", "thinking": "idle",
-    "sleeping": "rest", "eating": "idle", "happy": "idle", "angry": "idle", "proud": "idle", "working": "idle"
+    "sad": "rest",
+    "error": "rest",
+    "alert": "idle",
+    "thinking": "idle",
+    "sleeping": "rest",
+    "eating": "idle",
+    "happy": "idle",
+    "angry": "idle",
+    "proud": "idle",
+    "working": "idle",
+    "beg": "idle",
+    "guilty": "sad"
   }
 }

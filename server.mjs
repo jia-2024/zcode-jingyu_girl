@@ -321,11 +321,13 @@ async function contextState() {
 
   // 自动语境判定（优先级从高到低）；手动指定 state 时直接用
   let st
+  const overBudget = Number(s.dailyBudget) > 0 && Number(today.amount) >= Number(s.dailyBudget)
   if (state.manual && state.manualState) st = state.manualState
   else if (bal.ok === false && bal.error && bal.code !== 'NO_KEY') st = 'error'
-  else if (quotaMaxPct >= 90 || balanceLow) st = 'alert'
+  else if (quotaMaxPct >= 90 || balanceLow) st = 'beg'
   else if (lastTurnAge < 8000) st = 'happy'
   else if (beijingHourNow() < 7) st = 'sleeping'
+  else if (overBudget) st = 'guilty'
   else if (isPeakNow()) st = 'working'
   else if (quotaMaxPct >= 60) st = 'thinking'
   else st = Math.floor(Date.now() / 180000) % 2 ? 'eating' : 'idle'
@@ -351,9 +353,17 @@ async function contextState() {
     return r.startsWith('..') ? null : '/api/assets/' + r
   }
   let imageUrl = null
-  const stateImg = (manifest?.stateImages?.[form] || {})[st]
+  // 跨形态回退：本形态没有的状态图，按形态优先级去其他形态找（生气/愧疚等表情在各形态不全）
+  const findStateImg = (stName) => {
+    for (const f of [form, 'semi-chibi', 'chibi', 'super-deformed', 'compact', 'standard']) {
+      const u = (manifest?.stateImages?.[f] || {})[stName]
+      if (u) return u
+    }
+    return null
+  }
+  const stateImg = findStateImg(st)
   const fallbackState = manifest?.stateFallback?.[st] || 'idle'
-  const fallbackImg = (manifest?.stateImages?.[form] || {})[fallbackState]
+  const fallbackImg = findStateImg(fallbackState)
   const outfitImg = outfit?.images ? (outfit.images[st] || outfit.images[fallbackState] || outfit.images.idle) : null
   if (outfit && outfit.useMemes) imageUrl = null // 表情包模式：主形象仍用形态图，气泡出表情包
   else if (outfitImg) imageUrl = assetUrl(outfitImg)
