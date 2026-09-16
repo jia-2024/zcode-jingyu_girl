@@ -4,6 +4,18 @@
 
 > 本地运行，数据不出机器。桌宠行为零 token 消耗；仅「AI 生成表情包」调用你自己的智谱 API 余额。
 
+## 🖼️ 鲸鱼娘是谁
+
+一只住在 ZCode 右下角的蓝色鲸鱼娘（DeepSeek 同人形象）：深洋蓝渐变青卷发、鲸鳍耳、呆毛、鲸尾、藏青白女仆装，性格随机（活泼/安静/傲娇/吃货），喜欢吃白米饭、盯你的额度、 occasional 撒娇。
+
+![五种形态](docs/images/forms.png)
+
+![九种状态](docs/images/states.png)
+
+AI 表情包工坊生成样例（CogView-4，一键「干饭」预设）：
+
+![AI 表情包样例](docs/images/ai-meme-sample.jpg)
+
 ## ✨ 功能
 
 - 🐋 **ZCode 内桌宠**：透明置顶小窗贴在 ZCode 客户区内，跟随窗口移动，透明区域点击穿透
