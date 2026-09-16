@@ -1,0 +1,20 @@
+# 密钥与本地数据绝不入库
+keys.json
+state.json
+usage.json
+shop.json
+turn.json
+bubble.json
+api.json
+archive.json
+*.bad-*
+hook-debug.log
+
+# 运行产物
+__pycache__/
+*.pyc
+node_modules/
+
+# AI 生成图（各用户自产）
+assets/memes/generated/
+dist/

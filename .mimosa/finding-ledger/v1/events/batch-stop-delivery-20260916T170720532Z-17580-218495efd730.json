@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "mimosa-finding-ledger-batch/v1",
+  "batchId": "stop-delivery-20260916T170720532Z-17580-218495efd730",
+  "runId": "20260916T170720532Z-17580-218495efd730",
+  "runStatus": "completed",
+  "coverage": {
+    "status": "complete",
+    "reasons": []
+  },
+  "source": {
+    "component": "zcode-hook",
+    "operationId": "StopDelivery"
+  },
+  "revision": "215c8ad5ea0b04bcdfb6cc84af6f4a3cdcd927c5",
+  "diffHash": "2193c331928c0130e67f491639d0b2ad6856caaddc31cbed73fd9a4b6f15e22d",
+  "rulesVersion": "unavailable",
+  "sessionHash": "289af72ad14645a5f0e4de3207340c6762c22a6875b12d071a4ddde668497ce0",
+  "reportRef": ".mimosa/reports/task-review-sess_b6441bcc-3d11-46fa-ac80-30534d142a8b-20260916T170720532Z-17580-218495efd730.json",
+  "events": [
+    {
+      "eventId": "hook-670acbd31f4caec8317d51ef73c34d23",
+      "findingId": "mimosa-3872d2cab7edb8d66f030f78",
+      "type": "finding_blocked",
+      "at": "2026-09-16T17:07:21.311Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "ef82b935415a17bb3b10d5074785eb3edae5ad0a7b53cfa5a373239f95a7c7a3",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 361,
+      "endLine": 361,
+      "reasonCode": "stop_rewake",
+      "reportedToAgent": true,
+      "evidence": {
+        "kind": "source",
+        "boundary": "candidate",
+        "producer": "deterministic",
+        "evidenceHash": "ef82b935415a17bb3b10d5074785eb3edae5ad0a7b53cfa5a373239f95a7c7a3"
+      },
+      "sequence": 0
+    },
+    {
+      "eventId": "hook-97705e04555bf20b3e7fee2992045e37",
+      "findingId": "mimosa-8bd1a2b06718258137de2bb9",
+      "type": "finding_blocked",
+      "at": "2026-09-16T17:07:21.311Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "10bd3491d288596bf42b92cc4f143ad389598b3d6fe3221c1e76f9d210256d6d",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 372,
+      "endLine": 372,
+      "reasonCode": "stop_rewake",
+      "reportedToAgent": true,
+      "evidence": {
+        "kind": "source",
+        "boundary": "candidate",
+        "producer": "deterministic",
+        "evidenceHash": "10bd3491d288596bf42b92cc4f143ad389598b3d6fe3221c1e76f9d210256d6d"
+      },
+      "sequence": 1
+    }
+  ],
+  "observedFindingIds": [],
+  "verifiedFiles": [],
+  "recordedAt": "2026-09-16T17:07:22.205Z"
+}

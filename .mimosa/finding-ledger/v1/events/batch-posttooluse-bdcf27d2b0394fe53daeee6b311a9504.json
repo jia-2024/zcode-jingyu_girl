@@ -1,0 +1,264 @@
+{
+  "schemaVersion": "mimosa-finding-ledger-batch/v1",
+  "batchId": "posttooluse-bdcf27d2b0394fe53daeee6b311a9504",
+  "runId": null,
+  "runStatus": "completed",
+  "coverage": {
+    "status": "complete",
+    "reasons": []
+  },
+  "source": {
+    "component": "zcode-hook",
+    "operationId": "PostToolUse"
+  },
+  "revision": null,
+  "diffHash": null,
+  "rulesVersion": null,
+  "sessionHash": "289af72ad14645a5f0e4de3207340c6762c22a6875b12d071a4ddde668497ce0",
+  "reportRef": null,
+  "events": [
+    {
+      "eventId": "hook-d7233a5a23cb757f8147f0112b992642",
+      "findingId": "mimosa-0c2bf06259d08a4d0c6def58",
+      "type": "static_fix_verified",
+      "at": "2026-09-16T17:38:38.540Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "7957b3ca53b06e07a330e426bd619c3deaaf84f4ace4e7d7d8dce0011ac2ea96",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 105,
+      "endLine": 105,
+      "reasonCode": "static_rescan_passed",
+      "reportedToAgent": false,
+      "evidence": {
+        "kind": "static_scan",
+        "boundary": "observed",
+        "producer": "deterministic",
+        "evidenceHash": "7957b3ca53b06e07a330e426bd619c3deaaf84f4ace4e7d7d8dce0011ac2ea96"
+      },
+      "sequence": 0
+    },
+    {
+      "eventId": "hook-9726ef005b3f537828d41668a100cf16",
+      "findingId": "mimosa-acc4f2cc6d6a0a84138672cc",
+      "type": "static_fix_verified",
+      "at": "2026-09-16T17:38:38.540Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "b0f3f799dcd9c1ff43d3fdbf60c7ae44340d45718ec35c817de57318ad20e203",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 196,
+      "endLine": 196,
+      "reasonCode": "static_rescan_passed",
+      "reportedToAgent": false,
+      "evidence": {
+        "kind": "static_scan",
+        "boundary": "observed",
+        "producer": "deterministic",
+        "evidenceHash": "b0f3f799dcd9c1ff43d3fdbf60c7ae44340d45718ec35c817de57318ad20e203"
+      },
+      "sequence": 1
+    },
+    {
+      "eventId": "hook-a0471cc6af7edd45114c14ade366b8a1",
+      "findingId": "mimosa-9652860d60938fc1def8c876",
+      "type": "static_fix_verified",
+      "at": "2026-09-16T17:38:38.540Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "1eb813b95733e8cbd2ac1febdce85f18e2c6215c1bf9b7b2ec90d2bbaa404056",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 410,
+      "endLine": 410,
+      "reasonCode": "static_rescan_passed",
+      "reportedToAgent": false,
+      "evidence": {
+        "kind": "static_scan",
+        "boundary": "observed",
+        "producer": "deterministic",
+        "evidenceHash": "1eb813b95733e8cbd2ac1febdce85f18e2c6215c1bf9b7b2ec90d2bbaa404056"
+      },
+      "sequence": 2
+    },
+    {
+      "eventId": "hook-fc7f973bb91635ada4a8e434102f3ab9",
+      "findingId": "mimosa-7378dedd38b8a0ec93ef273e",
+      "type": "static_fix_verified",
+      "at": "2026-09-16T17:38:38.540Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "f3e3d51ac96e3fc24ee35889c57ed966642acff34d9deababb28bfc02d2c9a21",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 411,
+      "endLine": 411,
+      "reasonCode": "static_rescan_passed",
+      "reportedToAgent": false,
+      "evidence": {
+        "kind": "static_scan",
+        "boundary": "observed",
+        "producer": "deterministic",
+        "evidenceHash": "f3e3d51ac96e3fc24ee35889c57ed966642acff34d9deababb28bfc02d2c9a21"
+      },
+      "sequence": 3
+    },
+    {
+      "eventId": "hook-44b53b364241d25b48742c71b7c062f8",
+      "findingId": "mimosa-dd08f21103ae4f4d8a842021",
+      "type": "static_fix_verified",
+      "at": "2026-09-16T17:38:38.540Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "105902576fc13e0ea45cb8a0f6c2d25458a8928cdbbb3c010673bd5d45fb079d",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 191,
+      "endLine": 191,
+      "reasonCode": "static_rescan_passed",
+      "reportedToAgent": false,
+      "evidence": {
+        "kind": "static_scan",
+        "boundary": "observed",
+        "producer": "deterministic",
+        "evidenceHash": "105902576fc13e0ea45cb8a0f6c2d25458a8928cdbbb3c010673bd5d45fb079d"
+      },
+      "sequence": 4
+    },
+    {
+      "eventId": "hook-bbc01c6355174369e51428fa2e92d11f",
+      "findingId": "mimosa-98a0eadfbee6516da33c6237",
+      "type": "static_fix_verified",
+      "at": "2026-09-16T17:38:38.540Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "5e0367e907381ee4e0962cbffed1fb12cf4d8b256b2b9fd6571a12c3c5f87d49",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 193,
+      "endLine": 193,
+      "reasonCode": "static_rescan_passed",
+      "reportedToAgent": false,
+      "evidence": {
+        "kind": "static_scan",
+        "boundary": "observed",
+        "producer": "deterministic",
+        "evidenceHash": "5e0367e907381ee4e0962cbffed1fb12cf4d8b256b2b9fd6571a12c3c5f87d49"
+      },
+      "sequence": 5
+    },
+    {
+      "eventId": "hook-ee1d11587bc86abfb56e8d7442a3accc",
+      "findingId": "mimosa-087fb9d7e249fc6dffc6b9ff",
+      "type": "static_fix_verified",
+      "at": "2026-09-16T17:38:38.540Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "35ed1ab926f4604f3818fec6568f44901729a65607c65f34a8ee720c01e4d52b",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 197,
+      "endLine": 197,
+      "reasonCode": "static_rescan_passed",
+      "reportedToAgent": false,
+      "evidence": {
+        "kind": "static_scan",
+        "boundary": "observed",
+        "producer": "deterministic",
+        "evidenceHash": "35ed1ab926f4604f3818fec6568f44901729a65607c65f34a8ee720c01e4d52b"
+      },
+      "sequence": 6
+    },
+    {
+      "eventId": "hook-5eb34581e159c9a44988f19b453b6b4e",
+      "findingId": "mimosa-ac64f589fce1c54fa493ff47",
+      "type": "static_fix_verified",
+      "at": "2026-09-16T17:38:38.540Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "bf70e0803f109602178bbc937bf100ce4c1f0047a5e51cef277f4eefc3133460",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 389,
+      "endLine": 389,
+      "reasonCode": "static_rescan_passed",
+      "reportedToAgent": false,
+      "evidence": {
+        "kind": "static_scan",
+        "boundary": "observed",
+        "producer": "deterministic",
+        "evidenceHash": "bf70e0803f109602178bbc937bf100ce4c1f0047a5e51cef277f4eefc3133460"
+      },
+      "sequence": 7
+    },
+    {
+      "eventId": "hook-d1d7d4296825c47a561d3ad0ddcb49c5",
+      "findingId": "mimosa-6589496aa697215443226185",
+      "type": "static_fix_verified",
+      "at": "2026-09-16T17:38:38.540Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "79b692bb813b36595562557ba27e929507f5ed7549fef6cbe0d04a16e237e0f0",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 396,
+      "endLine": 396,
+      "reasonCode": "static_rescan_passed",
+      "reportedToAgent": false,
+      "evidence": {
+        "kind": "static_scan",
+        "boundary": "observed",
+        "producer": "deterministic",
+        "evidenceHash": "79b692bb813b36595562557ba27e929507f5ed7549fef6cbe0d04a16e237e0f0"
+      },
+      "sequence": 8
+    },
+    {
+      "eventId": "hook-2d2860c4fbabe4c242f6859fb7c35e2f",
+      "findingId": "mimosa-3872d2cab7edb8d66f030f78",
+      "type": "static_fix_verified",
+      "at": "2026-09-16T17:38:38.540Z",
+      "identity": {
+        "projectRelativeFile": "pet.py",
+        "ruleId": "security",
+        "codeEvidenceHash": "ef82b935415a17bb3b10d5074785eb3edae5ad0a7b53cfa5a373239f95a7c7a3",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 409,
+      "endLine": 409,
+      "reasonCode": "static_rescan_passed",
+      "reportedToAgent": false,
+      "evidence": {
+        "kind": "static_scan",
+        "boundary": "observed",
+        "producer": "deterministic",
+        "evidenceHash": "ef82b935415a17bb3b10d5074785eb3edae5ad0a7b53cfa5a373239f95a7c7a3"
+      },
+      "sequence": 9
+    }
+  ],
+  "observedFindingIds": [],
+  "verifiedFiles": [],
+  "recordedAt": "2026-09-16T17:38:39.241Z"
+}

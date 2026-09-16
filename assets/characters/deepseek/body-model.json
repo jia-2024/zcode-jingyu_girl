@@ -1,0 +1,462 @@
+{
+  "desc": "鲸鱼娘身体模型参数（whalechan 形态规范 + 图像锚点标定）。锚点为抠图裁剪框内的归一化坐标 (x,y ∈ 0-1)，用于服饰/饰品分层挂载。2026-09-17 网格标定。",
+  "identity": {
+    "name": "鲸鱼娘",
+    "permanent": "圆脸大眼、深洋蓝渐变青卷发、一对鲸鳍耳、前弯呆毛、自然相连鲸尾、两臂两腿",
+    "palette": {
+      "navy": "#1e2a4a",
+      "ocean": "#3a5aa8",
+      "cyan": "#7ab8e8",
+      "white": "#f5f2ec",
+      "gold": "#c9a86a",
+      "skin": "#f7e3dc"
+    }
+  },
+  "forms": {
+    "standard": {
+      "heads": 4.0,
+      "image": "forms/standard/idle.png",
+      "anchors": {
+        "head_center": [
+          0.46,
+          0.15
+        ],
+        "head_top": [
+          0.44,
+          0.02
+        ],
+        "ahoge": [
+          0.44,
+          0.0
+        ],
+        "ear_fin_l": [
+          0.265,
+          0.175
+        ],
+        "ear_fin_r": [
+          0.675,
+          0.215
+        ],
+        "eyes": [
+          0.475,
+          0.205
+        ],
+        "neck": [
+          0.48,
+          0.3
+        ],
+        "chest_bow": [
+          0.48,
+          0.355
+        ],
+        "waist": [
+          0.47,
+          0.45
+        ],
+        "apron_center": [
+          0.47,
+          0.55
+        ],
+        "hand_l": [
+          0.12,
+          0.48
+        ],
+        "hand_r": [
+          0.86,
+          0.38
+        ],
+        "tail_base": [
+          0.62,
+          0.72
+        ],
+        "tail_tip": [
+          0.96,
+          0.62
+        ],
+        "feet": [
+          0.44,
+          0.98
+        ]
+      },
+      "head_width": 0.3
+    },
+    "compact": {
+      "heads": 3.3,
+      "image": "forms/compact/idle.png",
+      "anchors": {
+        "head_center": [
+          0.46,
+          0.21
+        ],
+        "head_top": [
+          0.45,
+          0.06
+        ],
+        "ahoge": [
+          0.47,
+          0.0
+        ],
+        "ear_fin_l": [
+          0.23,
+          0.28
+        ],
+        "ear_fin_r": [
+          0.7,
+          0.3
+        ],
+        "eyes": [
+          0.47,
+          0.25
+        ],
+        "neck": [
+          0.46,
+          0.345
+        ],
+        "chest_bow": [
+          0.46,
+          0.42
+        ],
+        "waist": [
+          0.45,
+          0.52
+        ],
+        "apron_center": [
+          0.45,
+          0.63
+        ],
+        "hand_l": [
+          0.2,
+          0.44
+        ],
+        "hand_r": [
+          0.76,
+          0.52
+        ],
+        "tail_base": [
+          0.7,
+          0.78
+        ],
+        "tail_tip": [
+          0.98,
+          0.7
+        ],
+        "feet": [
+          0.48,
+          0.97
+        ]
+      },
+      "head_width": 0.38
+    },
+    "semi-chibi": {
+      "heads": 2.8,
+      "image": "forms/standard/idle.png",
+      "anchors": {
+        "head_center": [
+          0.46,
+          0.15
+        ],
+        "head_top": [
+          0.44,
+          0.02
+        ],
+        "ahoge": [
+          0.44,
+          0.0
+        ],
+        "ear_fin_l": [
+          0.265,
+          0.175
+        ],
+        "ear_fin_r": [
+          0.675,
+          0.215
+        ],
+        "eyes": [
+          0.475,
+          0.205
+        ],
+        "neck": [
+          0.48,
+          0.3
+        ],
+        "chest_bow": [
+          0.48,
+          0.355
+        ],
+        "waist": [
+          0.47,
+          0.45
+        ],
+        "apron_center": [
+          0.47,
+          0.55
+        ],
+        "hand_l": [
+          0.12,
+          0.48
+        ],
+        "hand_r": [
+          0.86,
+          0.38
+        ],
+        "tail_base": [
+          0.62,
+          0.72
+        ],
+        "tail_tip": [
+          0.96,
+          0.62
+        ],
+        "feet": [
+          0.44,
+          0.98
+        ]
+      },
+      "head_width": 0.34,
+      "note": "默认形态；当前复用 standard 立绘"
+    },
+    "chibi": {
+      "heads": 2.5,
+      "image": "forms/chibi/happy.png",
+      "anchors": {
+        "head_center": [
+          0.35,
+          0.3
+        ],
+        "head_top": [
+          0.3,
+          0.05
+        ],
+        "ahoge": [
+          0.28,
+          0.0
+        ],
+        "ear_fin_l": [
+          0.08,
+          0.45
+        ],
+        "ear_fin_r": [
+          0.6,
+          0.26
+        ],
+        "eyes": [
+          0.35,
+          0.33
+        ],
+        "neck": [
+          0.42,
+          0.5
+        ],
+        "chest_bow": [
+          0.46,
+          0.54
+        ],
+        "waist": [
+          0.55,
+          0.58
+        ],
+        "apron_center": [
+          0.6,
+          0.62
+        ],
+        "hand_l": [
+          0.22,
+          0.55
+        ],
+        "hand_r": [
+          0.58,
+          0.45
+        ],
+        "tail_base": [
+          0.8,
+          0.74
+        ],
+        "tail_tip": [
+          1.0,
+          0.52
+        ],
+        "feet": [
+          0.8,
+          0.86
+        ]
+      },
+      "head_width": 0.48,
+      "note": "躺姿抱碗图"
+    },
+    "super-deformed": {
+      "heads": 2.1,
+      "image": "forms/super-deformed/happy.png",
+      "anchors": {
+        "head_center": [
+          0.42,
+          0.28
+        ],
+        "head_top": [
+          0.4,
+          0.02
+        ],
+        "ahoge": [
+          0.38,
+          0.0
+        ],
+        "ear_fin_l": [
+          0.1,
+          0.35
+        ],
+        "ear_fin_r": [
+          0.74,
+          0.3
+        ],
+        "eyes": [
+          0.42,
+          0.3
+        ],
+        "neck": [
+          0.44,
+          0.47
+        ],
+        "chest_bow": [
+          0.45,
+          0.56
+        ],
+        "waist": [
+          0.46,
+          0.62
+        ],
+        "apron_center": [
+          0.48,
+          0.72
+        ],
+        "hand_l": [
+          0.2,
+          0.6
+        ],
+        "hand_r": [
+          0.62,
+          0.58
+        ],
+        "tail_base": [
+          0.8,
+          0.72
+        ],
+        "tail_tip": [
+          1.0,
+          0.58
+        ],
+        "feet": [
+          0.46,
+          0.99
+        ]
+      },
+      "head_width": 0.52
+    }
+  },
+  "accessories": [
+    {
+      "id": "ribbon_royal",
+      "name": "金边缎带结",
+      "slot": "head_top",
+      "scale": 0.16,
+      "palette": [
+        "#3a5aa8",
+        "#c9a86a"
+      ],
+      "desc": "藏青底金描边的大蝴蝶结"
+    },
+    {
+      "id": "crown_whale",
+      "name": "鲸鱼小皇冠",
+      "slot": "head_top",
+      "scale": 0.14,
+      "palette": [
+        "#c9a86a",
+        "#3a5aa8"
+      ],
+      "desc": "金色三尖冠 + 鲸鱼宝石"
+    },
+    {
+      "id": "flower_ocean",
+      "name": "海蓝花饰",
+      "slot": "ear_fin_r",
+      "scale": 0.1,
+      "palette": [
+        "#7ab8e8",
+        "#ffffff"
+      ],
+      "desc": "五瓣海蓝小花"
+    },
+    {
+      "id": "glasses_round",
+      "name": "圆框眼镜",
+      "slot": "eyes",
+      "scale": 0.28,
+      "palette": [
+        "#c9a86a"
+      ],
+      "desc": "金丝圆框（不上色镜片）"
+    },
+    {
+      "id": "scarf_navy",
+      "name": "藏青围巾",
+      "slot": "neck",
+      "scale": 0.26,
+      "palette": [
+        "#1e2a4a",
+        "#7ab8e8"
+      ],
+      "desc": "厚围巾带飘尾"
+    },
+    {
+      "id": "bell_collar",
+      "name": "铃铛项圈",
+      "slot": "neck",
+      "scale": 0.2,
+      "palette": [
+        "#c9a86a",
+        "#3a5aa8"
+      ],
+      "desc": "蓝带金铃"
+    },
+    {
+      "id": "sailor_collar",
+      "name": "水手领",
+      "slot": "neck",
+      "scale": 0.3,
+      "palette": [
+        "#ffffff",
+        "#3a5aa8"
+      ],
+      "desc": "白色水手领蓝镶边"
+    },
+    {
+      "id": "headphones",
+      "name": "鲸鳍耳机",
+      "slot": "ear_fin_l",
+      "scale": 0.26,
+      "palette": [
+        "#1e2a4a",
+        "#7ab8e8"
+      ],
+      "desc": "头戴耳机（横跨头顶）"
+    },
+    {
+      "id": "cape_mini",
+      "name": "迷你斗篷",
+      "slot": "neck",
+      "scale": 0.34,
+      "palette": [
+        "#1e2a4a",
+        "#c9a86a"
+      ],
+      "desc": "藏青小斗篷金扣"
+    }
+  ],
+  "slots": [
+    "head_top",
+    "ear_fin_l",
+    "ear_fin_r",
+    "eyes",
+    "neck"
+  ],
+  "slotRules": "同一 slot 只能挂一件（head_top 与 ear_fin_r 等可并存）；渲染顺序按 accessories 数组序"
+}

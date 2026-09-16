@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "mimosa-finding-history/v1",
+  "runId": "20260916T175743713Z-11352-bacfed35a64a",
+  "runStatus": "inconclusive",
+  "errors": [
+    "baseline-read:assets/reference/whale-musume/boot-error/prepare.py: baseline_snapshot_unreadable: file is missing from task baseline"
+  ],
+  "target": ".",
+  "revision": "215c8ad5ea0b04bcdfb6cc84af6f4a3cdcd927c5",
+  "diffHash": "d6ae54a9d03313aed8a657049ec4f443acf3e36bdda3620dda7e2635ddc6bb2e",
+  "rulesVersion": "unavailable",
+  "recordedAt": "2026-09-16T17:57:43.713Z",
+  "timing": {
+    "startedAt": "2026-09-16T17:57:40.863Z",
+    "completedAt": "2026-09-16T17:57:43.713Z",
+    "durationMs": 2850
+  },
+  "tokens": {
+    "input": 0,
+    "output": 0,
+    "total": 0,
+    "modelCalls": 0,
+    "measurement": "known-zero"
+  },
+  "findings": {
+    "total": 11,
+    "bySeverity": {
+      "low": 7,
+      "high": 4
+    },
+    "byStatus": {
+      "static_verified": 10,
+      "candidate": 1
+    }
+  },
+  "coverage": {
+    "status": "partial",
+    "reasonCounts": {
+      "baseline_snapshot_unreadable": 1,
+      "project_check_failed": 1
+    }
+  },
+  "evidenceBoundary": "static_only",
+  "immutableReport": ".mimosa/reports/task-review-sess_b6441bcc-3d11-46fa-ac80-30534d142a8b-20260916T175743713Z-11352-bacfed35a64a.json"
+}
