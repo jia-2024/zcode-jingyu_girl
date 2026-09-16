@@ -18,6 +18,7 @@ import sys
 import time
 import ctypes.wintypes as wt
 import threading
+import urllib.error
 import urllib.parse
 import urllib.request
 import tkinter as tk
@@ -176,7 +177,9 @@ class WhalePet:
         st = self.ctx.get('state')
         if st and st != self.last_state:
             if self.last_state is not None:
-                self.show_bubble()
+                w = self.ctx.get('weather')
+                line = (w.get('reminder') + '（' + w.get('text', '') + ' ' + str(w.get('temp', '')) + '°C）') if (w and w.get('ok') and w.get('reminder')) else None
+                self.show_bubble(custom_line=line)
             self.last_state = st
             self.behavior = 'gesture'
             self.behavior_until = time.time() + 1.6
@@ -703,7 +706,7 @@ class WhalePet:
             self.drag = (e.x, e.y)
 
     def on_release(self, e):
-        was_click = (time.time() - self.press_at) < 0.3 and not self.moved
+        was_click = (time.time() - self.press_at) < 0.35 and not self.moved
         self.drag = None
         if self.zwin and self.moved:
             _, l, t, r, b = self.zwin
@@ -712,7 +715,8 @@ class WhalePet:
         if was_click:
             self.behavior = 'gesture'
             self.behavior_until = time.time() + 1.4
-            self.show_bubble()
+            # 先播完整 Q 弹序列，气泡随后弹出（不再盖住弹跳动画）
+            self.play_q_then(260, self.show_bubble)
 
     def on_right(self, e):
         self.menu.delete(0, 'end')

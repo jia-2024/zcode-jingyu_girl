@@ -72,6 +72,15 @@
     <div class="muted" id="quotaUpd"></div>
   </div>
   <div class="card">
+    <h2>🌦️ 天气 <span class="muted" id="weatherCity"></span></h2>
+    <div class="big" id="weatherMain">…</div>
+    <div class="muted" id="weatherSub"></div>
+    <div class="row" style="justify-content:flex-start;margin-top:8px">
+      <input id="weatherCityInput" placeholder="城市拼音/中文，如 上海" style="flex:1;border:1.5px solid #dfe5f3;border-radius:8px;padding:6px 10px;font-size:13px">
+      <span class="chip" onclick="setCity()">切换城市</span>
+    </div>
+  </div>
+  <div class="card">
     <h2>💰 DeepSeek 余额</h2>
     <div class="big" id="dsBalance">…</div>
     <div class="muted" id="dsMeta"></div>

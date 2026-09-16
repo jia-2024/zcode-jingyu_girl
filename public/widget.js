@@ -56,6 +56,13 @@
       }
       $('todayUse').textContent = '¥' + Number(cs.todayUsage).toFixed(2)
       $('peakInfo').textContent = cs.isPeak ? '⛰️ 高峰时段（9-12 / 14-18）计价 ×2' : '🌊 空闲时段（周末全天谷价）'
+      if (cs.weather) {
+        if (cs.weather.ok) {
+          $('weatherCity').textContent = '· ' + cs.weather.city
+          $('weatherMain').textContent = cs.weather.text + ' ' + cs.weather.temp + '°C'
+          $('weatherSub').textContent = `今日 ${cs.weather.tmin}~${cs.weather.tmax}°C · 风速 ${cs.weather.windspeed}km/h${cs.weather.reminder ? ' · ' + cs.weather.reminder : ''}`
+        } else { $('weatherMain').textContent = '—'; $('weatherSub').textContent = cs.weather.error || '' }
+      }
     } catch {}
   }
   function fmtCountdown(ts) {
@@ -117,6 +124,13 @@
       const next = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]
       putState({ accessories: next })
     })
+  }
+
+  window.setCity = async () => {
+    const v = $('weatherCityInput').value.trim()
+    if (!v) return
+    await fetch('/api/state.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ weatherCity: v }) })
+    pollContext()
   }
 
   // ---- 金币商店 / 性格 / 导入 ----

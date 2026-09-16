@@ -17,6 +17,7 @@ import { API_TEMPLATES, pickPath } from './lib/templates.mjs'
 import { generateMeme, listGeneratedMemes, MEME_PRESETS } from './lib/meme-gen.mjs'
 import { personalitySummary, personalityLine, PERSONALITIES } from './lib/personality.mjs'
 import { chat as whaleChat } from './lib/chat.mjs'
+import { getWeather } from './lib/weather.mjs'
 import { shopStatus, catalog as shopCatalog, buy as shopBuy, isOwned } from './lib/shop.mjs'
 import { DATA_DIR, FILES, ensureDataDir, readJson, writeJson, resolveKey } from './lib/store.mjs'
 
@@ -67,7 +68,7 @@ const DEFAULT_STATE = {
   hiddenMenuBtn: false,
   // 鲸鱼娘形象体系：形态（whalechan 5 形态）/ 装扮 / 饰品 / 语境模式
   form: 'semi-chibi', outfit: 'maid', accessories: [], manual: false, manualState: null,
-  memeBubbles: true, petScale: 1.0, petOn: true,
+  memeBubbles: true, petScale: 1.0, petOn: true, weatherCity: '北京',
 }
 let state = { ...DEFAULT_STATE, ...(readJson(FILES.state, {}) || {}) }
 
@@ -396,11 +397,14 @@ async function contextState() {
   }
   let shop = null
   try { shop = shopStatus(ledger) } catch {}
+  let weather = null
+  try { weather = await getWeather(state.weatherCity || '北京') } catch {}
 
   return {
     state: st,
     personality: personality ? { id: personality.id, name: personality.name, emoji: personality.emoji, temper: personality.temper, behavior: personality.behavior } : null,
     coins: shop ? { balance: shop.coins, owned: shop.owned } : null,
+    weather,
     character: { id: 'deepseek', name: manifest?.name || '鲸鱼娘', form, formName: manifest?.forms?.[form]?.name, outfit: outfit?.id, outfitName: outfit?.name },
     imageUrl,
     line: lineFinal,

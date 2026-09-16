@@ -46,18 +46,27 @@
       "name": "超Q SD",
       "heads": 2.1,
       "desc": "大情绪反转/贴纸"
+    },
+    "tall": {
+      "name": "高挑女仆",
+      "heads": 4.2,
+      "desc": "原版立绘·高挑修长"
     }
   },
   "stateImages": {
     "standard": {
       "idle": "forms/standard/idle.png",
       "working": "forms/standard/working.png",
-      "rest": "forms/standard/rest.png"
+      "rest": "forms/standard/rest.png",
+      "angry": "forms/standard/angry.png",
+      "sad": "forms/standard/sad.png"
     },
     "compact": {
       "idle": "forms/compact/idle.png",
       "working": "forms/compact/working.png",
-      "rest": "forms/compact/rest.png"
+      "rest": "forms/compact/rest.png",
+      "angry": "forms/chibi/angry.png",
+      "sad": "forms/super-deformed/sad.png"
     },
     "semi-chibi": {
       "idle": "forms/standard/idle.png",
@@ -79,6 +88,9 @@
       "idle": "forms/super-deformed/happy.png",
       "error": "forms/super-deformed/error.png",
       "sad": "forms/super-deformed/sad.png"
+    },
+    "tall": {
+      "idle": "forms/standard/tall.png"
     }
   },
   "outfits": [
