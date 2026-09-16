@@ -18,3 +18,4 @@ node_modules/
 # AI 生成图（各用户自产）
 assets/memes/generated/
 dist/
+**/.mimosa/

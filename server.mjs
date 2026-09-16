@@ -16,6 +16,7 @@ import { isPeakNow, nextPeakChange, turnCost, bucketCost, priceFor, setCustomPri
 import { API_TEMPLATES, pickPath } from './lib/templates.mjs'
 import { generateMeme, listGeneratedMemes, MEME_PRESETS } from './lib/meme-gen.mjs'
 import { personalitySummary, personalityLine, PERSONALITIES } from './lib/personality.mjs'
+import { chat as whaleChat } from './lib/chat.mjs'
 import { shopStatus, catalog as shopCatalog, buy as shopBuy, isOwned } from './lib/shop.mjs'
 import { DATA_DIR, FILES, ensureDataDir, readJson, writeJson, resolveKey } from './lib/store.mjs'
 
@@ -359,6 +360,11 @@ async function contextState() {
   else if (stateImg) imageUrl = assetUrl(stateImg)
   else if (fallbackImg) imageUrl = assetUrl(fallbackImg)
 
+  let stateMemes = {}
+  try {
+    const cm = JSON.parse(fs.readFileSync(path.join(ASSETS_DIR, 'memes', 'context-map.json'), 'utf8'))
+    stateMemes = cm.states || {}
+  } catch {}
   const showMeme = (outfit?.useMemes || state.memeBubbles !== false) && memes.length > 0 && Math.random() < (outfit?.useMemes ? 1 : 0.35)
   let memeId = showMeme ? pickRandom(memes) : null
   // 扩充贴纸池（memes/extra/）：非 alert/error 语境时 15% 概率随机出一张收藏贴纸
@@ -389,6 +395,7 @@ async function contextState() {
     imageUrl,
     line: lineFinal,
     memeUrl: memeExtra ? `/api/assets/memes/${memeExtra}` : (memeId ? `/api/assets/memes/meme-${memeId}.webp` : null),
+    _stateMemes: stateMemes,
     quota, balance: bal.ok ? { totalBalance: bal.totalBalance, currency: bal.currency, stale: !!bal.stale } : null,
     todayUsage: today.amount,
     isPeak: isPeakNow(),
@@ -666,6 +673,32 @@ async function route(req, res, url) {
 
   // 语境状态：形象/状态/台词/表情包 + 额度余额聚合（桌宠与控制台共用）
   if (method === 'GET' && p === '/api/context-state.json') return send(res, 200, { ok: true, ...(await contextState()) })
+
+  // 聊天：3 轮上下文 + 性格/语境 system；AI 回文字或映射表情包库图片
+  if (method === 'POST' && p === '/api/chat') {
+    const body = await readBody(req)
+    const cs = await contextState()
+    const quota = cs.quota && cs.quota.ok ? cs.quota.windows.map((w) => `${w.label}窗口剩${100 - w.usedPct}%`).join('，') : ''
+    const r = await whaleChat({ state: cs.state, quotaText: quota, _stateMemes: cs._stateMemes }, String(body.text || ''))
+    const out = { ok: r.ok !== false, reply: r.reply ?? r.fallback ?? '……', memeUrl: r.memeUrl || null }
+    // 兜底：用户明确要表情包但 AI 没配 → 按关键词直接从库里挑
+    if (!out.memeUrl && r.ok && /表情包|来张|发张|发个图|图片/.test(String(body.text || ''))) {
+      const map = { 吃: 'eating', 饭: 'eating', 生气: 'angry', 哭: 'sad', 难过: 'sad', 睡: 'sleeping', 钱: 'alert', 余额: 'alert', 错: 'error', bug: 'error', 夸: 'proud', 开心: 'happy', 高兴: 'happy' }
+      for (const [kw, stName] of Object.entries(map)) {
+        const kwIds = (cs._stateMemes && cs._stateMemes[stName]?.memes) || []
+        if (String(body.text).includes(kw) && kwIds.length) {
+          out.memeUrl = `/api/assets/memes/meme-${kwIds[Math.floor(Math.random() * kwIds.length)]}.webp`
+          break
+        }
+      }
+      const stIds = (cs._stateMemes && cs._stateMemes[cs.state]?.memes) || []
+      if (!out.memeUrl && stIds.length) {
+        out.memeUrl = `/api/assets/memes/meme-${stIds[Math.floor(Math.random() * stIds.length)]}.webp`
+      }
+    }
+    if (r.error) out.error = r.error
+    return send(res, 200, out)
+  }
 
   // 角色模型库
   if (method === 'GET' && p === '/api/characters.json') {

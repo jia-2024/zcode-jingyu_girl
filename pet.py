@@ -59,6 +59,12 @@ def safe_get_json(path, timeout=6):
     return json.load(urllib.request.urlopen(api_url(path), timeout=timeout))
 
 
+def safe_put_json(path, payload, timeout=8):
+    req = urllib.request.Request(api_url(path), method='PUT',
+                                 data=json.dumps(payload).encode(), headers={'Content-Type': 'application/json'})
+    return json.load(urllib.request.urlopen(req, timeout=timeout))
+
+
 def safe_post_json(path, payload, timeout=150):
     req = urllib.request.Request(api_url(path), method='POST',
                                  data=json.dumps(payload).encode(), headers={'Content-Type': 'application/json'})
@@ -132,6 +138,7 @@ class WhalePet:
         self.menu = tk.Menu(self.root, tearoff=0, font=('Microsoft YaHei', 10))
         self.pill_win = None      # 额度常显药丸
         self.summon_win = None    # 召唤按钮（贴 ZCode 底边）
+        self.hidden = False       # petOn=False 时的隐藏（缩 1x1，不影响召唤按钮）
         self.canvas.bind('<Button-1>', self.on_press)
         self.canvas.bind('<B1-Motion>', self.on_drag)
         self.canvas.bind('<ButtonRelease-1>', self.on_release)
@@ -161,10 +168,10 @@ class WhalePet:
         except queue.Empty:
             pass
         on = (self.ctx.get('_settings') or {}).get('petOn', True)
-        if on and self.root.state() != 'normal':
-            self.root.deiconify()
-        if not on:
-            self.root.withdraw()
+        if on and self.hidden:
+            self.show_pet()
+        if not on and not self.hidden:
+            self.hide_pet()
         st = self.ctx.get('state')
         if st and st != self.last_state:
             if self.last_state is not None:
@@ -181,10 +188,13 @@ class WhalePet:
             self.zwin = z
             hwnd, left, top, right, bottom = z
             if user32.IsIconic(hwnd):
-                self.root.withdraw()
+                self.hide_pet()
             else:
-                if self.root.state() != 'normal':
-                    self.root.deiconify()
+                on = (self.ctx.get('_settings') or {}).get('petOn', True)
+                if not on and not self.hidden:
+                    self.hide_pet()
+                elif on and self.hidden:
+                    self.show_pet()
                 pet_w = max(self.root.winfo_width(), 160)
                 if self.pos_x is None:
                     self.pos_x = right - left - pet_w - 24
@@ -200,6 +210,17 @@ class WhalePet:
             self.place(sw - 200, sh - self.char_h - 80)
             self.sync_companions(sw - 620, sh - 160, sw, sh)
         self.root.after(700, self.tick)
+
+    # ---------- 显示/隐藏（不用 withdraw：会连带吞掉子窗口的交互） ----------
+    def hide_pet(self):
+        self.hidden = True
+        self.canvas.delete('all')
+        self.root.geometry('1x1+5+5')
+
+    def show_pet(self):
+        self.hidden = False
+        self.cur = None
+        self.render_soon()
 
     # ---------- 常显额度药丸 + 召唤按钮 ----------
     def sync_companions(self, left, top, right, bottom):
@@ -246,17 +267,31 @@ class WhalePet:
             sc.create_oval(3, 3, 41, 41, fill='#16224a', outline='#4a5fc0', width=2)
             sc.create_text(22, 21, text='🐋', font=('Segoe UI Emoji', 15), fill='white')
             sc.bind('<Button-1>', self.toggle_pet)
+            self._summon_btn_canvas = sc
             self.summon_win.geometry('44x44+0+0')
         bx = (left + right) // 2 - 22
         by = bottom - 58
         if (int(bx), int(by)) != (self.summon_win.winfo_x(), self.summon_win.winfo_y()):
             self.summon_win.geometry('44x44+' + str(int(bx)) + '+' + str(int(by)))
-        if self.root.state() == 'normal':
+        if self.summon_win.state() != 'normal':
             self.summon_win.deiconify()
 
     def toggle_pet(self, e=None):
-        on = (self.ctx.get('_settings') or {}).get('petOn', True)
-        self.put_state({'petOn': not on})
+        # 从服务端读最新开关再翻转（不用 6s 轮询的旧缓存，避免连点打架）
+        def run():
+            try:
+                st = safe_get_json('/api/state.json', timeout=5)
+                cur = (st.get('state') or {}).get('petOn', True)
+                safe_put_json('/api/state.json', {'petOn': not cur})
+                ctx = safe_get_json('/api/context-state.json')
+                st2 = safe_get_json('/api/state.json')
+                ctx['_settings'] = st2.get('state', {})
+                self.q.put(ctx)
+                if not cur:
+                    self.root.after(300, lambda: (self.root.deiconify(), self.show_bubble(custom_line='🐋 召唤成功！我回来啦～')))
+            except Exception as e:
+                print('TOGGLE error:', e, flush=True)
+        threading.Thread(target=run, daemon=True).start()
 
     def place(self, x, y):
         if (int(x), int(y)) != (self.root.winfo_x(), self.root.winfo_y()):
@@ -487,7 +522,37 @@ class WhalePet:
         elif '自动' in text:
             put({'manual': False, 'manualState': None}, '回到自动语境～')
         else:
-            self.show_bubble(custom_line='嗯嗯？输入 ? 看看指令，或试试「生成 一只在干饭的鲸鱼娘」')
+            self.send_chat(text)
+
+    def send_chat(self, text):
+        self.show_bubble(custom_line='（' + text[:18] + '）……思考中')
+        def run():
+            try:
+                r = safe_post_json('/api/chat', {'text': text}, timeout=40)
+                reply = r.get('reply') or r.get('fallback') or '……'
+                meme = r.get('memeUrl')
+                if meme:
+                    rel = meme.split('/api/assets/')[-1]
+                    self._chat_meme = rel  # 让气泡直接展示这张表情包
+                    self.show_bubble_meme(rel, reply)
+                else:
+                    self.show_bubble(custom_line=reply)
+            except Exception as e:
+                self.show_bubble(custom_line='（断线了：' + str(e)[:30] + '）')
+        threading.Thread(target=run, daemon=True).start()
+
+    def show_bubble_meme(self, rel, caption):
+        # 聊天表情包：复用独立气泡窗展示图 + 一行回复
+        try:
+            self.show_bubble(custom_line=caption)
+            if self.bubble_win:
+                mim = Image.open(os.path.join(ASSETS, rel.replace('/', os.sep))).convert('RGBA')
+                mim.thumbnail((150, 110), Image.LANCZOS)
+                self._chat_meme_img = ImageTk.PhotoImage(mim)
+                wc = self.bubble_win.winfo_children()[0]
+                wc.create_image(60, 52, image=self._chat_meme_img)
+        except Exception:
+            pass
 
     def gen_meme(self, prompt):
         try:
