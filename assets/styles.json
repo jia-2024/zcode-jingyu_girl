@@ -29,7 +29,10 @@
             "idle": "forms/maid/tall/idle.png",
             "angry": "forms/maid/tall/angry.png",
             "happy": "forms/maid/tall/happy.png",
-            "sad": "forms/maid/tall/sad.png"
+            "sad": "forms/maid/tall/sad.png",
+            "eating": "forms/maid/tall/eating.png",
+            "sleeping": "forms/maid/tall/sleeping.png",
+            "working": "forms/maid/tall/working.png"
           }
         },
         {
@@ -37,9 +40,13 @@
           "name": "紧凑 3.3头身",
           "heads": 3.3,
           "states": {
-            "idle": "forms/compact/idle.png",
+            "idle": "forms/maid/compact/idle.png",
             "working": "forms/compact/working.png",
-            "rest": "forms/compact/rest.png"
+            "rest": "forms/compact/rest.png",
+            "angry": "forms/maid/compact/angry.png",
+            "happy": "forms/maid/compact/happy.png",
+            "sad": "forms/maid/compact/sad.png",
+            "sleeping": "forms/maid/compact/sleeping.png"
           }
         },
         {

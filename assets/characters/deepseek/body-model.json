@@ -1345,6 +1345,118 @@
         0.48,
         0.392
       ]
+    },
+    "forms/maid/compact/angry.png": {
+      "eyes": [
+        0.492,
+        0.361
+      ],
+      "head_top": [
+        0.44,
+        0.006
+      ],
+      "neck": [
+        0.48,
+        0.827
+      ]
+    },
+    "forms/maid/compact/happy.png": {
+      "eyes": [
+        0.5,
+        0.0
+      ],
+      "head_top": [
+        0.44,
+        0.0
+      ],
+      "neck": [
+        0.48,
+        0.279
+      ]
+    },
+    "forms/maid/compact/idle.png": {
+      "eyes": [
+        0.566,
+        0.046
+      ],
+      "head_top": [
+        0.44,
+        0.0
+      ],
+      "neck": [
+        0.48,
+        0.503
+      ]
+    },
+    "forms/maid/compact/sad.png": {
+      "eyes": [
+        0.505,
+        0.36
+      ],
+      "head_top": [
+        0.44,
+        0.006
+      ],
+      "neck": [
+        0.48,
+        0.761
+      ]
+    },
+    "forms/maid/compact/sleeping.png": {
+      "eyes": [
+        0.499,
+        0.386
+      ],
+      "head_top": [
+        0.44,
+        0.006
+      ],
+      "neck": [
+        0.48,
+        0.835
+      ]
+    },
+    "forms/maid/tall/eating.png": {
+      "eyes": [
+        0.507,
+        0.098
+      ],
+      "head_top": [
+        0.44,
+        0.0
+      ],
+      "neck": [
+        0.48,
+        0.535
+      ]
+    },
+    "forms/maid/tall/sleeping.png": {
+      "eyes": [
+        0.484,
+        0.442
+      ],
+      "head_top": [
+        0.44,
+        0.006
+      ],
+      "neck": [
+        0.48,
+        0.866
+      ]
+    },
+    "forms/maid/tall/working.png": {
+      "eyes": [
+        0.5,
+        0.0
+      ],
+      "head_top": [
+        0.44,
+        0.0
+      ],
+      "neck": [
+        0.48,
+        0.0
+      ]
     }
   }
 }
