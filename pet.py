@@ -770,7 +770,7 @@ class WhalePet:
             img, yoff = frames[i]
             self.canvas.delete('char')
             self.canvas.create_image(int(self.char_pil.width * (0.06 - 0.06 * i)), BUBBLE_H + yoff, image=img, anchor='nw', tags='char')
-            self.root.after(95, lambda: step(i + 1))
+            self.root.after(140, lambda: step(i + 1))
         self.root.after(delay_ms, lambda: step(0))
 
     def on_drag(self, e):

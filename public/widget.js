@@ -193,8 +193,9 @@
       if (!d.ok) return
       $('presetRow').innerHTML = d.presets.map((p) =>
         `<span class="chip" onclick="genPreset('${p.id}')">${p.name}</span>`).join('')
-      $('genGallery').innerHTML = (d.generated || []).slice(0, 8).map((g) =>
-        `<img src="${g.url}" title="${g.file}">`).join('')
+      $('genGallery').innerHTML = (d.generated || []).slice(0, 5).map((g) =>
+        `<img src="${g.url}" style="width:150px;height:150px;object-fit:cover;border-radius:10px;border:2px solid #dfe5f3" title="${g.file}">`).join('') +
+        ((d.generated || []).length ? '' : '<span class="muted">还没有生成记录</span>')
     } catch {}
   }
   async function genMeme(payload) {
