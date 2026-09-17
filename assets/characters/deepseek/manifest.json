@@ -130,11 +130,11 @@
       "name": "原版鲸鱼",
       "desc": "初代小鲸挂件造型",
       "images": {
-        "idle": "../DSniang1.png",
-        "working": "../DSniang1.png",
-        "eating": "../DSniang1.png",
-        "rest": "../DSniang1.png",
-        "happy": "../DSniang1.png"
+        "idle": "forms/classic.png",
+        "working": "forms/classic.png",
+        "eating": "forms/classic.png",
+        "rest": "forms/classic.png",
+        "happy": "forms/classic.png"
       }
     },
     {
