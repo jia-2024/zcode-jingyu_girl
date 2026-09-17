@@ -4,7 +4,7 @@
     {
       "id": "maid",
       "name": "经典女仆画风",
-      "source": "whalechan 参考图 + 知乎设定卡抠图（与设定卡同源画风）",
+      "source": "whalechan 参考图 + 知乎设定卡抠图（纯原生，无 AI 补图）",
       "proportions": [
         {
           "id": "standard",
@@ -13,12 +13,7 @@
           "states": {
             "idle": "forms/standard/idle.png",
             "working": "forms/standard/working.png",
-            "rest": "forms/standard/rest.png",
-            "angry": "forms/maid/standard/angry.png",
-            "eating": "forms/maid/standard/eating.png",
-            "happy": "forms/maid/standard/happy.png",
-            "sad": "forms/maid/standard/sad.png",
-            "sleeping": "forms/maid/standard/sleeping.png"
+            "rest": "forms/standard/rest.png"
           }
         },
         {
@@ -26,9 +21,7 @@
           "name": "高挑 4.2头身",
           "heads": 4.2,
           "states": {
-            "idle": "forms/maid/tall/idle.png",
-            "happy": "forms/maid/tall/happy.png",
-            "sad": "forms/maid/tall/sad.png"
+            "idle": "forms/standard/tall.png"
           }
         },
         {
@@ -48,7 +41,9 @@
           "states": {
             "alert": "forms/semi-chibi/alert.png",
             "thinking": "forms/semi-chibi/thinking.png",
-            "working": "forms/semi-chibi/working.png"
+            "working": "forms/semi-chibi/working.png",
+            "beg": "forms/semi-chibi/beg.png",
+            "guilty": "forms/semi-chibi/guilty.png"
           }
         },
         {
@@ -57,7 +52,8 @@
           "heads": 2.5,
           "states": {
             "happy": "forms/chibi/happy.png",
-            "angry": "forms/chibi/angry.png"
+            "angry": "forms/chibi/angry.png",
+            "eating": "states/rice-sit.png"
           }
         },
         {
@@ -75,62 +71,43 @@
     {
       "id": "aihand",
       "name": "AI 手绘风",
-      "source": "CogView-4 按身份块生成（2026-09 批次）；头身比为官方工具实测重标值（生成图偏 Q，CogView 对比例提示不敏感）",
+      "source": "CogView 生成（画风与官方设定卡有可感知差异，介意请用经典女仆画风）",
       "proportions": [
+        {
+          "id": "super-deformed",
+          "name": "超Q 2.1头身（实测）",
+          "heads": 2.15,
+          "states": {
+            "idle": "forms/semi-chibi/idle.png",
+            "happy": "forms/semi-chibi/happy.png",
+            "sad": "forms/semi-chibi/sad.png",
+            "angry": "forms/super-deformed/angry.png",
+            "sleeping": "forms/compact/sleeping.png"
+          }
+        },
         {
           "id": "chibi",
           "name": "Q版 2.4头身（实测）",
           "heads": 2.4,
           "states": {
-            "sad": "forms/aihand/chibi/sad.png",
-            "eating": "forms/chibi/eating-ai.png",
-            "idle": "forms/semi-chibi/angry.png",
+            "idle": "forms/semi-chibi/happy.png",
             "happy": "forms/semi-chibi/happy.png",
-            "angry": "forms/chibi/angry.png",
-            "sleeping": "forms/compact/sleeping.png",
-            "working": "forms/semi-chibi/working2.png"
-          }
-        },
-        {
-          "id": "super-deformed",
-          "name": "超Q 2.15头身（实测）",
-          "heads": 2.15,
-          "states": {
-            "idle": "forms/semi-chibi/idle.png",
-            "happy": "forms/chibi/happy.png",
-            "sad": "forms/semi-chibi/sad.png",
-            "angry": "forms/aihand/super-deformed/angry.png"
+            "sad": "forms/chibi/sad.png",
+            "angry": "forms/semi-chibi/angry.png",
+            "eating": "forms/chibi/eating-ai.png",
+            "working": "forms/semi-chibi/working2.png",
+            "sleeping": "forms/compact/sleeping.png"
           }
         },
         {
           "id": "compact",
-          "name": "紧凑 3.3头身（实测2张达标）",
+          "name": "紧凑 3.3头身（实测）",
           "heads": 3.3,
           "states": {
-            "idle": "forms/standard/tall.png",
-            "happy": "forms/aihand/compact/happy.png",
-            "angry": "forms/aihand/compact/angry.png",
-            "sad": "forms/aihand/compact/sad.png",
-            "sleeping": "forms/aihand/compact/sleeping.png"
-          }
-        },
-        {
-          "id": "semi-chibi",
-          "name": "semi-chibi",
-          "heads": 0,
-          "states": {
-            "angry": "forms/aihand/semi-chibi/angry.png",
-            "happy": "forms/aihand/semi-chibi/happy.png",
-            "idle": "forms/aihand/semi-chibi/idle.png",
-            "sad": "forms/aihand/semi-chibi/sad.png"
-          }
-        },
-        {
-          "id": "standard",
-          "name": "standard",
-          "heads": 0,
-          "states": {
-            "happy": "forms/aihand/standard/happy.png"
+            "happy": "forms/standard/happy.png",
+            "sleeping": "forms/compact/sleeping.png",
+            "sad": "forms/compact/sad.png",
+            "angry": "forms/compact/angry.png"
           }
         }
       ]

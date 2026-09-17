@@ -36,7 +36,7 @@ ALLOWED_HOST = '127.0.0.1'  # 仅允许本机挂件服务
 TRANSPARENT = '#010203'
 PET_H = 190
 BUBBLE_W, BUBBLE_H = 340, 252
-POLL_NET = int(os.environ.get('WHALE_POLL', '6'))
+POLL_NET = int(os.environ.get('WHALE_POLL', '3'))
 
 _sr = secrets.SystemRandom()
 
