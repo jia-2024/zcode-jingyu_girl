@@ -121,6 +121,7 @@ class WhalePet:
         self.canvas.pack(fill='both', expand=True)
 
         self.ctx = {}
+        self.catalog = None
         self.q = queue.Queue()
         self.img_cache = {}
         self.cur = None
@@ -160,6 +161,8 @@ class WhalePet:
                 st = safe_get_json('/api/state.json')
                 ctx['_settings'] = st.get('state', {})
                 self.q.put(ctx)
+                if self.catalog is None:
+                    self.catalog = safe_get_json('/api/catalog.json', timeout=8)
             except Exception:
                 pass
             time.sleep(POLL_NET)
@@ -796,10 +799,7 @@ class WhalePet:
     def on_right(self, e):
         self.menu.delete(0, 'end')
         # 四轴菜单：画风 / 比例 / 形态状态（由资产目录动态生成，无立绘组合不出现）
-        try:
-            cat = safe_get_json('/api/catalog.json', timeout=5)
-        except Exception:
-            cat = None
+        cat = self.catalog
         cur_style = (self.ctx.get('style') or {}).get('id')
         cur_prop = (self.ctx.get('proportion') or {}).get('id')
         if cat:
