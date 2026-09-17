@@ -11,9 +11,14 @@
           "name": "标准 4.0头身",
           "heads": 4.0,
           "states": {
-            "idle": "forms/standard/idle.png",
-            "working": "forms/standard/working.png",
-            "rest": "forms/standard/rest.png"
+            "idle": "forms/maid/standard/idle.png",
+            "working": "forms/maid/standard/working.png",
+            "rest": "forms/standard/rest.png",
+            "angry": "forms/maid/standard/angry.png",
+            "eating": "forms/maid/standard/eating.png",
+            "happy": "forms/maid/standard/happy.png",
+            "sad": "forms/maid/standard/sad.png",
+            "sleeping": "forms/maid/standard/sleeping.png"
           }
         },
         {
@@ -21,7 +26,10 @@
           "name": "高挑 4.2头身",
           "heads": 4.2,
           "states": {
-            "idle": "forms/standard/tall.png"
+            "idle": "forms/maid/tall/idle.png",
+            "angry": "forms/maid/tall/angry.png",
+            "happy": "forms/maid/tall/happy.png",
+            "sad": "forms/maid/tall/sad.png"
           }
         },
         {
@@ -81,7 +89,7 @@
             "idle": "forms/semi-chibi/idle.png",
             "happy": "forms/semi-chibi/happy.png",
             "sad": "forms/semi-chibi/sad.png",
-            "angry": "forms/super-deformed/angry.png",
+            "angry": "forms/aihand/super-deformed/angry.png",
             "sleeping": "forms/compact/sleeping.png"
           }
         },
@@ -92,7 +100,7 @@
           "states": {
             "idle": "forms/semi-chibi/happy.png",
             "happy": "forms/semi-chibi/happy.png",
-            "sad": "forms/chibi/sad.png",
+            "sad": "forms/aihand/chibi/sad.png",
             "angry": "forms/semi-chibi/angry.png",
             "eating": "forms/chibi/eating-ai.png",
             "working": "forms/semi-chibi/working2.png",
@@ -104,10 +112,29 @@
           "name": "紧凑 3.3头身（实测）",
           "heads": 3.3,
           "states": {
-            "happy": "forms/standard/happy.png",
-            "sleeping": "forms/compact/sleeping.png",
-            "sad": "forms/compact/sad.png",
-            "angry": "forms/compact/angry.png"
+            "happy": "forms/aihand/compact/happy.png",
+            "sleeping": "forms/aihand/compact/sleeping.png",
+            "sad": "forms/aihand/compact/sad.png",
+            "angry": "forms/aihand/compact/angry.png"
+          }
+        },
+        {
+          "id": "semi-chibi",
+          "name": "semi-chibi",
+          "heads": 0,
+          "states": {
+            "angry": "forms/aihand/semi-chibi/angry.png",
+            "happy": "forms/aihand/semi-chibi/happy.png",
+            "idle": "forms/aihand/semi-chibi/idle.png",
+            "sad": "forms/aihand/semi-chibi/sad.png"
+          }
+        },
+        {
+          "id": "standard",
+          "name": "standard",
+          "heads": 0,
+          "states": {
+            "happy": "forms/aihand/standard/happy.png"
           }
         }
       ]

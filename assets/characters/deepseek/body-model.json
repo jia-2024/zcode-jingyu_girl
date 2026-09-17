@@ -1303,6 +1303,48 @@
         0.48,
         0.927
       ]
+    },
+    "forms/maid/standard/idle.png": {
+      "eyes": [
+        0.503,
+        0.021
+      ],
+      "head_top": [
+        0.44,
+        0.0
+      ],
+      "neck": [
+        0.48,
+        0.465
+      ]
+    },
+    "forms/maid/standard/working.png": {
+      "eyes": [
+        0.5,
+        0.0
+      ],
+      "head_top": [
+        0.44,
+        0.0
+      ],
+      "neck": [
+        0.48,
+        0.0
+      ]
+    },
+    "forms/maid/tall/angry.png": {
+      "eyes": [
+        0.506,
+        0.076
+      ],
+      "head_top": [
+        0.44,
+        0.0
+      ],
+      "neck": [
+        0.48,
+        0.392
+      ]
     }
   }
 }
