@@ -50,7 +50,7 @@
     "tall": {
       "name": "高挑女仆",
       "heads": 4.2,
-      "desc": "原版立绘·高挑修长"
+      "desc": "原版立绘·高挑修长（立绘展示形态，各状态保持立绘）"
     }
   },
   "stateImages": {
@@ -58,36 +58,46 @@
       "idle": "forms/standard/idle.png",
       "working": "forms/standard/working.png",
       "rest": "forms/standard/rest.png",
-      "angry": "forms/standard/angry.png",
-      "sad": "forms/standard/sad.png"
+      "happy": "forms/standard/happy.png",
+      "sad": "forms/standard/sad.png",
+      "angry": "forms/standard/angry.png"
     },
     "compact": {
       "idle": "forms/compact/idle.png",
       "working": "forms/compact/working.png",
       "rest": "forms/compact/rest.png",
-      "angry": "forms/chibi/angry.png",
-      "sad": "forms/super-deformed/sad.png"
+      "happy": "forms/compact/happy.png",
+      "sad": "forms/compact/sad.png",
+      "angry": "forms/compact/angry.png",
+      "sleeping": "forms/compact/sleeping.png"
     },
     "semi-chibi": {
-      "idle": "forms/standard/idle.png",
-      "working": "forms/semi-chibi/working2.png",
-      "rest": "forms/compact/rest.png",
+      "idle": "forms/semi-chibi/idle.png",
+      "working": "forms/semi-chibi/working.png",
       "alert": "forms/semi-chibi/alert.png",
       "thinking": "forms/semi-chibi/thinking.png",
+      "happy": "forms/semi-chibi/happy.png",
+      "sad": "forms/semi-chibi/sad.png",
+      "angry": "forms/semi-chibi/angry.png",
       "sleeping": "forms/semi-chibi/sleeping.png",
       "beg": "forms/semi-chibi/beg.png",
-      "guilty": "forms/semi-chibi/guilty.png",
-      "eating": "forms/chibi/eating-ai.png"
+      "guilty": "forms/semi-chibi/guilty.png"
     },
     "chibi": {
       "idle": "forms/chibi/happy.png",
+      "working": "forms/chibi/happy.png",
+      "happy": "forms/chibi/happy.png",
       "angry": "forms/chibi/angry.png",
+      "sad": "forms/chibi/sad.png",
       "eating": "forms/chibi/eating-ai.png"
     },
     "super-deformed": {
       "idle": "forms/super-deformed/happy.png",
-      "error": "forms/super-deformed/error.png",
-      "sad": "forms/super-deformed/sad.png"
+      "working": "forms/super-deformed/happy.png",
+      "happy": "forms/super-deformed/happy.png",
+      "sad": "forms/super-deformed/sad.png",
+      "angry": "forms/super-deformed/angry.png",
+      "error": "forms/super-deformed/error.png"
     },
     "tall": {
       "idle": "forms/standard/tall.png"
@@ -137,17 +147,16 @@
     }
   ],
   "stateFallback": {
-    "sad": "rest",
-    "error": "rest",
+    "eating": "idle",
+    "sleeping": "rest",
     "alert": "idle",
     "thinking": "idle",
-    "sleeping": "rest",
-    "eating": "idle",
-    "happy": "idle",
-    "angry": "idle",
-    "proud": "idle",
-    "working": "idle",
     "beg": "idle",
-    "guilty": "sad"
+    "guilty": "sad",
+    "error": "sad",
+    "rest": "idle",
+    "working": "idle",
+    "proud": "happy",
+    "confused": "idle"
   }
 }

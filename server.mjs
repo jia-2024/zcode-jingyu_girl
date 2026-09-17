@@ -354,13 +354,16 @@ async function contextState() {
     return r.startsWith('..') ? null : '/api/assets/' + r
   }
   let imageUrl = null
-  // 跨形态回退：本形态没有的状态图，按形态优先级去其他形态找（生气/愧疚等表情在各形态不全）
+  // 状态图解析：本形态 → 状态兜底链（同形态内，绝不出形态，头身比永不突变）
   const findStateImg = (stName) => {
-    for (const f of [form, 'semi-chibi', 'chibi', 'super-deformed', 'compact', 'standard']) {
-      const u = (manifest?.stateImages?.[f] || {})[stName]
-      if (u) return u
+    const own = manifest?.stateImages?.[form] || {}
+    if (own[stName]) return own[stName]
+    let fb = manifest?.stateFallback?.[stName]
+    for (let hop = 0; fb && hop < 3; hop++) {
+      if (own[fb]) return own[fb]
+      fb = manifest?.stateFallback?.[fb]
     }
-    return null
+    return own.idle || null
   }
   const stateImg = findStateImg(st)
   const fallbackState = manifest?.stateFallback?.[st] || 'idle'
@@ -785,11 +788,15 @@ async function route(req, res, url) {
   if (method === 'PUT' && p === '/api/state.json') {
     const body = await readBody(req)
     if (body.usageMode && body.usageMode !== state.usageMode) balanceCache.clear()
-    // 商店拥有权校验：付费装扮/饰品必须已拥有（免费件放行）
+    // 商店拥有权校验：只拦「付费且未拥有」的商品（免费商品直接放行）
     try {
-      if (body.outfit && !isOwned('outfit:' + body.outfit)) return send(res, 403, { ok: false, error: '还没拥有这件装扮，去商店用金币买～' })
+      const priced = new Map(shopCatalog().filter((i) => i.price > 0).map((i) => [i.id, i.price]))
+      if (body.outfit) {
+        const id = 'outfit:' + body.outfit
+        if (priced.has(id) && !isOwned(id)) return send(res, 403, { ok: false, error: '还没拥有这件装扮，去商店用金币买～' })
+      }
       if (Array.isArray(body.accessories)) {
-        const notOwned = body.accessories.filter((a) => !isOwned(a))
+        const notOwned = body.accessories.filter((a) => priced.has(a) && !isOwned(a))
         if (notOwned.length) return send(res, 403, { ok: false, error: '饰品未解锁: ' + notOwned.join(', ') })
       }
     } catch {}

@@ -652,15 +652,15 @@ class WhalePet:
         threading.Thread(target=run, daemon=True).start()
 
     def show_bubble_meme(self, rel, caption):
-        # 聊天表情包：复用独立气泡窗展示图 + 一行回复
+        # 聊天表情包：与语境气泡同一尺寸体系（140×92），不再用独立小图
         try:
             self.show_bubble(custom_line=caption)
             if self.bubble_win:
                 mim = Image.open(os.path.join(ASSETS, rel.replace('/', os.sep))).convert('RGBA')
-                mim.thumbnail((150, 110), Image.LANCZOS)
+                mim.thumbnail((140, 92), Image.LANCZOS)
                 self._chat_meme_img = ImageTk.PhotoImage(mim)
                 wc = self.bubble_win.winfo_children()[0]
-                wc.create_image(60, 52, image=self._chat_meme_img)
+                wc.create_image(80, 56, image=self._chat_meme_img)
         except Exception:
             pass
 

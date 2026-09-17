@@ -180,7 +180,7 @@
       $('presetRow').innerHTML = d.presets.map((p) =>
         `<span class="chip" onclick="genPreset('${p.id}')">${p.name}</span>`).join('')
       $('genGallery').innerHTML = (d.generated || []).slice(0, 8).map((g) =>
-        `<img src="${g.url}" style="width:92px;border-radius:8px;border:1px solid #e3e8f5" title="${g.file}">`).join('')
+        `<img src="${g.url}" title="${g.file}">`).join('')
     } catch {}
   }
   async function genMeme(payload) {

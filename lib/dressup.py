@@ -118,6 +118,8 @@ def render_character(form='semi-chibi', accessory_ids=None, state_image=None, si
     im = Image.open(img_path).convert('RGBA')
     W, H = im.size
     acc_map = {a['id']: a for a in bm['accessories']}
+    # 每张图的锚点覆盖（AI 图构图与设定卡不同，逐图标定）
+    overrides = (bm.get('anchorOverrides') or {}).get(str(img_rel).replace(os.sep, '/'), {})
     used_slots = set()
     for aid in accessory_ids or []:
         acc = acc_map.get(aid)
@@ -127,7 +129,8 @@ def render_character(form='semi-chibi', accessory_ids=None, state_image=None, si
         if slot in used_slots:
             continue  # 同槽位只挂第一件
         used_slots.add(slot)
-        ax, ay = fdef['anchors'].get(slot, [0.5, 0.1])
+        base_anchor = fdef['anchors'].get(slot, [0.5, 0.1])
+        ax, ay = overrides.get(slot, base_anchor)
         part_w = int(W * acc['scale'])
         aspect = {'glasses_round': 0.55, 'headphones': 1.0, 'scarf_navy': 1.5, 'bell_collar': 2.4,
                   'sailor_collar': 1.4, 'cape_mini': 1.3, 'ribbon_royal': 1.0, 'crown_whale': 1.4, 'flower_ocean': 1.0}.get(aid, 1.0)
