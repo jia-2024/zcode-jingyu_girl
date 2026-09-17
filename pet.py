@@ -124,6 +124,7 @@ class WhalePet:
         self.q = queue.Queue()
         self.img_cache = {}
         self.cur = None
+        self.char_pil = None
         self.char_h = PET_H
         self.bubble_win = None
         self.bubble_until = 0
@@ -422,6 +423,7 @@ class WhalePet:
         self.cur = key
         try:
             entry = self._render_entry(rel, h, flip, accs, tilt)
+            self.char_pil = entry[0]
             self.char_h = entry[0].height
             want = f'{max(entry[0].width, 160)}x{self.char_h + 8}'
             if self.root.geometry().split('+')[0] != want:
@@ -567,20 +569,23 @@ class WhalePet:
         self.bubble_win = win
         self.bubble_until = time.time() + 30
 
-        def auto_close():
-            if self.bubble_win is win:
-                focused = False
-                try:
-                    focused = win.focus_get() is not None
-                except Exception:
-                    pass
-                if not focused and time.time() > self.bubble_until:
-                    try: win.destroy()
-                    except Exception: pass
-                    self.bubble_win = None
-                    return
-            self.root.after(1000, auto_close)
-        self.root.after(1000, auto_close)
+        gen = (setattr(self, '_bubble_gen', getattr(self, '_bubble_gen', 0) + 1) or self._bubble_gen)
+        def auto_close(g=gen):
+            # 代币校验：气泡换代/销毁后链路自动终止（修复定时器泄漏=越用越卡）
+            if self.bubble_win is not win or g != getattr(self, '_bubble_gen', 0):
+                return
+            focused = False
+            try:
+                focused = win.focus_get() is not None
+            except Exception:
+                pass
+            if not focused and time.time() > self.bubble_until:
+                try: win.destroy()
+                except Exception: pass
+                if self.bubble_win is win: self.bubble_win = None
+                return
+            self.root.after(1000, lambda: auto_close(g))
+        self.root.after(1000, lambda: auto_close(gen))
 
     # ---------- 指令解析 ----------
     def run_command(self, entry):
@@ -696,6 +701,49 @@ class WhalePet:
         self.press_at = time.time()
         self.moved = False
         self.behavior = 'idle'
+        # Q 弹第 1 帧：压扁
+        if self.char_pil:
+            frames = self._q_frames()
+            if frames:
+                img, yoff = frames[0]
+                self.canvas.delete('char')
+                self.canvas.create_image(int(self.char_pil.width * -0.06), BUBBLE_H + yoff, image=img, anchor='nw', tags='char')
+
+    def _q_frames(self):
+        # Q 弹三帧：压扁 / 拉伸 / 回弹（按当前形象缓存）
+        if not self.char_pil:
+            return []
+        w0, h0 = self.char_pil.size
+        specs = [((int(w0 * 1.12), int(h0 * 0.82)), int(h0 * 0.18)),
+                 ((int(w0 * 0.94), int(h0 * 1.08)), 0),
+                 ((int(w0 * 1.05), int(h0 * 0.96)), 0)]
+        out = []
+        for i, ((w, h), yoff) in enumerate(specs):
+            k = (self.cur, 'q', i)
+            f = self.img_cache.get(k)
+            if not f:
+                im = self.char_pil.resize((w, h), Image.LANCZOS)
+                f = (im, ImageTk.PhotoImage(im))
+                self.img_cache[k] = f
+            out.append((f[1], yoff))
+        return out
+
+    def play_q_then(self, delay_ms, then=None):
+        frames = self._q_frames()
+        if not frames:
+            if then: self.root.after(delay_ms, then)
+            return
+        def step(i):
+            if i >= len(frames):
+                self.canvas.delete('char')
+                self.render_soon()
+                if then: self.root.after(60, then)
+                return
+            img, yoff = frames[i]
+            self.canvas.delete('char')
+            self.canvas.create_image(int(self.char_pil.width * (0.06 - 0.06 * i)), BUBBLE_H + yoff, image=img, anchor='nw', tags='char')
+            self.root.after(95, lambda: step(i + 1))
+        self.root.after(delay_ms, lambda: step(0))
 
     def on_drag(self, e):
         if not self.drag:

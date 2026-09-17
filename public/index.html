@@ -48,21 +48,8 @@
 <div class="card" id="stage">
   <h2>🐋 <span id="charName">鲸鱼娘</span> <span class="muted" id="charMeta"></span></h2>
   <img id="charImg" src="" alt="鲸鱼娘" draggable="false">
-  <div class="muted" style="text-align:left;margin-top:8px" id="secStyle">🎨 画风</div>
-  <div class="row" id="styleRow" style="justify-content:flex-start"></div>
-  <div class="muted" style="text-align:left" id="secProp">📐 比例</div>
-  <div class="row" id="propRow" style="justify-content:flex-start"></div>
-  <div class="muted" style="text-align:left" id="secState">🎭 形态（状态）</div>
-  <div class="row" id="stateRow" style="justify-content:flex-start"></div>
-  <div class="muted" style="text-align:left">🎀 装饰（随画风/比例自适应锚点）</div>
-  <div class="row" id="accRow" style="justify-content:flex-start"></div>
-  <div class="row">
   <div id="bubble">加载中…</div>
   <div class="stateimg" id="stateInfo"></div>
-  <div class="row" id="styleRow"></div>
-  <div class="row" id="propRow"></div>
-  <div class="row" id="stateRow"></div>
-  <div class="row" id="accRow"></div>
   <div class="row">
     <span class="chip" id="autoChip" onclick="setManual(false)">🌍 自动语境</span>
     <span class="chip" id="petChip" onclick="togglePet()">🐋 鲸鱼娘：开</span>
@@ -70,6 +57,16 @@
   </div>
 </div>
 <div id="main">
+  <div class="card full">
+    <h2>🎨 画风</h2>
+    <div class="row" id="styleRow" style="justify-content:flex-start"></div>
+    <h2 style="margin-top:10px">📐 比例 <span class="muted">（同画风下的头身比）</span></h2>
+    <div class="row" id="propRow" style="justify-content:flex-start"></div>
+    <h2 style="margin-top:10px">🎭 形态（状态）<span class="muted">（该画风×比例下可用的立绘）</span></h2>
+    <div class="row" id="stateRow" style="justify-content:flex-start"></div>
+    <h2 style="margin-top:10px">🎀 装饰 <span class="muted">（锚点随画风/比例自适应）</span></h2>
+    <div class="row" id="accRow" style="justify-content:flex-start"></div>
+  </div>
   <div class="card">
     <h2>🎯 GLM Coding Plan 额度 <span class="muted" id="glmLevel"></span></h2>
     <div id="quotaWins"></div>
