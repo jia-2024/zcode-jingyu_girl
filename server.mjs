@@ -18,6 +18,7 @@ import { generateMeme, listGeneratedMemes, MEME_PRESETS } from './lib/meme-gen.m
 import { personalitySummary, personalityLine, PERSONALITIES } from './lib/personality.mjs'
 import { chat as whaleChat } from './lib/chat.mjs'
 import { getWeather } from './lib/weather.mjs'
+import { readStylesCatalog, resolveArt, styleCompat } from './lib/styles.mjs'
 import { shopStatus, catalog as shopCatalog, buy as shopBuy, isOwned } from './lib/shop.mjs'
 import { DATA_DIR, FILES, ensureDataDir, readJson, writeJson, resolveKey } from './lib/store.mjs'
 
@@ -342,44 +343,20 @@ async function contextState() {
   try { memes = JSON.parse(fs.readFileSync(path.join(charDir, '..', 'memes', 'context-map.json'), 'utf8')).states[st]?.memes || [] } catch {}
   if (!lines.length) lines = ['鲸鱼娘待机中～']
 
-  // 形象解析：装扮 → 形态 → 状态图（找不到就沿 fallback 链退到 idle）
+  // 四轴解析：画风 style × 比例 proportion × 状态 state（数据来自 assets/styles.json）
   const manifest = readCharacterManifest('deepseek')
-  const outfit = manifest?.outfits?.find((o) => o.id === state.outfit) || manifest?.outfits?.[0]
-  const form = manifest?.forms?.[state.form] ? state.form : (manifest?.defaultForm || 'semi-chibi')
-  // 归一化为相对 assets/ 的安全子路径（装帄件可能写 ../DSniang1.png 这类相对路径）
-  const assetUrl = (rel) => {
-    if (!rel) return null
-    const abs = path.normalize(path.join(ASSETS_DIR, 'characters', 'deepseek', rel))
-    const r = path.relative(ASSETS_DIR, abs).replace(/\\/g, '/')
-    return r.startsWith('..') ? null : '/api/assets/' + r
-  }
-  let imageUrl = null
-  // 状态图解析：本形态 → 状态兜底链（同形态内，绝不出形态，头身比永不突变）
-  const findStateImg = (stName) => {
-    const own = manifest?.stateImages?.[form] || {}
-    if (own[stName]) return own[stName]
-    let fb = manifest?.stateFallback?.[stName]
-    for (let hop = 0; fb && hop < 3; hop++) {
-      if (own[fb]) return own[fb]
-      fb = manifest?.stateFallback?.[fb]
-    }
-    return own.idle || null
-  }
-  const stateImg = findStateImg(st)
-  const fallbackState = manifest?.stateFallback?.[st] || 'idle'
-  const fallbackImg = findStateImg(fallbackState)
-  const outfitImg = outfit?.images ? (outfit.images[st] || outfit.images[fallbackState] || outfit.images.idle) : null
-  if (outfit && outfit.useMemes) imageUrl = null // 表情包模式：主形象仍用形态图，气泡出表情包
-  else if (outfitImg) imageUrl = assetUrl(outfitImg)
-  else if (stateImg) imageUrl = assetUrl(stateImg)
-  else if (fallbackImg) imageUrl = assetUrl(fallbackImg)
+  styleCompat(state)
+  const art = resolveArt(state.style, state.proportion, st, catalogOf().stateFallback || {})
+  const outfit = { id: art.style.id, name: art.style.name }
+  const form = art.proportion.id
+  let imageUrl = art.imageUrl // sticker 画风为 null（贴纸走气泡）
 
   let stateMemes = {}
   try {
-    const cm = JSON.parse(fs.readFileSync(path.join(ASSETS_DIR, 'memes', 'context-map.json'), 'utf8'))
-    stateMemes = cm.states || {}
+    stateMemes = JSON.parse(fs.readFileSync(path.join(ASSETS_DIR, 'memes', 'context-map.json'), 'utf8')).states || {}
   } catch {}
-  const showMeme = (outfit?.useMemes || state.memeBubbles !== false) && memes.length > 0 && Math.random() < (outfit?.useMemes ? 1 : 0.35)
+  const isStickerStyle = outfit?.id === 'sticker'
+  const showMeme = (isStickerStyle || outfit?.useMemes || state.memeBubbles !== false) && memes.length > 0 && Math.random() < (isStickerStyle || outfit?.useMemes ? 1 : 0.35)
   let memeId = showMeme ? pickRandom(memes) : null
   // 扩充贴纸池（memes/extra/）：非 alert/error 语境时 15% 概率随机出一张收藏贴纸
   let memeExtra = null
@@ -408,7 +385,9 @@ async function contextState() {
     personality: personality ? { id: personality.id, name: personality.name, emoji: personality.emoji, temper: personality.temper, behavior: personality.behavior } : null,
     coins: shop ? { balance: shop.coins, owned: shop.owned } : null,
     weather,
-    character: { id: 'deepseek', name: manifest?.name || '鲸鱼娘', form, formName: manifest?.forms?.[form]?.name, outfit: outfit?.id, outfitName: outfit?.name },
+    character: { id: 'deepseek', name: manifest?.name || '鲸鱼娘', form, formName: art.proportion.name, outfit: outfit?.id, outfitName: outfit?.name },
+    style: { id: art.style.id, name: art.style.name },
+    proportion: { id: art.proportion.id, name: art.proportion.name },
     imageUrl,
     line: lineFinal,
     memeUrl: memeExtra ? `/api/assets/memes/${memeExtra}` : (memeId ? `/api/assets/memes/meme-${memeId}.webp` : null),
@@ -472,6 +451,13 @@ async function importAssets(body) {
   }
   return { ok: false, error: 'kind 必须是 outfit 或 accessory' }
 }
+
+let _catalog = null
+function catalogOf() {
+  if (!_catalog) _catalog = readStylesCatalog()
+  return _catalog
+}
+function stateFallbackOf(catalog) { return catalog.stateFallback || {} }
 
 function readCharacterManifest(id) {
   try {
@@ -747,6 +733,12 @@ async function route(req, res, url) {
   if (method === 'POST' && p === '/api/import') {
     const body = await readBody(req)
     return send(res, 200, await importAssets(body))
+  }
+
+  // 四轴妆造目录（画风×比例×状态，控制台菜单数据源）
+  if (method === 'GET' && p === '/api/catalog.json') {
+    const c = catalogOf()
+    return send(res, 200, { ok: true, styles: c.styles, stateNames: c.stateNames || {}, stateFallback: c.stateFallback || {} })
   }
 
   // 身体模型参数 + 饰品目录

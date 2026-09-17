@@ -48,21 +48,24 @@
 <div class="card" id="stage">
   <h2>🐋 <span id="charName">鲸鱼娘</span> <span class="muted" id="charMeta"></span></h2>
   <img id="charImg" src="" alt="鲸鱼娘" draggable="false">
+  <div class="muted" style="text-align:left;margin-top:8px" id="secStyle">🎨 画风</div>
+  <div class="row" id="styleRow" style="justify-content:flex-start"></div>
+  <div class="muted" style="text-align:left" id="secProp">📐 比例</div>
+  <div class="row" id="propRow" style="justify-content:flex-start"></div>
+  <div class="muted" style="text-align:left" id="secState">🎭 形态（状态）</div>
+  <div class="row" id="stateRow" style="justify-content:flex-start"></div>
+  <div class="muted" style="text-align:left">🎀 装饰（随画风/比例自适应锚点）</div>
+  <div class="row" id="accRow" style="justify-content:flex-start"></div>
+  <div class="row">
   <div id="bubble">加载中…</div>
   <div class="stateimg" id="stateInfo"></div>
-  <div class="row" id="formRow"></div>
-  <div class="row" id="outfitRow"></div>
+  <div class="row" id="styleRow"></div>
+  <div class="row" id="propRow"></div>
+  <div class="row" id="stateRow"></div>
   <div class="row" id="accRow"></div>
   <div class="row">
     <span class="chip" id="autoChip" onclick="setManual(false)">🌍 自动语境</span>
     <span class="chip" id="petChip" onclick="togglePet()">🐋 鲸鱼娘：开</span>
-    <select id="manualState" onchange="setManual(true, this.value)">
-      <option value="">手动指定状态…</option>
-      <option value="idle">待机</option><option value="happy">开心</option><option value="eating">干饭</option>
-      <option value="working">工作</option><option value="thinking">思考</option><option value="sleeping">睡觉</option>
-      <option value="sad">难过</option><option value="error">出错</option><option value="alert">讨债</option>
-      <option value="proud">傲娇</option><option value="confused">困惑</option><option value="angry">生气</option><option value="glm">GLM 梗</option>
-    </select>
     <span class="chip" id="memeChip" onclick="toggleMeme()">🎭 表情包气泡</span>
   </div>
 </div>

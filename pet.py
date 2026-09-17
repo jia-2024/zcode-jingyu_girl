@@ -369,7 +369,7 @@ class WhalePet:
             self.render_soon()
         elif self.behavior == 'gesture':
             self.render_soon(bounce=(int(time.time() * 6) % 2 == 0))
-        self.root.after(140 if self.behavior == 'walk' else 500, self.behave)
+        self.root.after(200 if self.behavior == 'walk' else 500, self.behave)
 
     # ---------- 渲染（缓存 + 变化才重绘） ----------
     def render_soon(self, bounce=False):
@@ -423,7 +423,9 @@ class WhalePet:
         try:
             entry = self._render_entry(rel, h, flip, accs, tilt)
             self.char_h = entry[0].height
-            self.root.geometry(f'{max(entry[0].width, 160)}x{self.char_h + 8}')
+            want = f'{max(entry[0].width, 160)}x{self.char_h + 8}'
+            if self.root.geometry().split('+')[0] != want:
+                self.root.geometry(want)
             self.canvas.delete('char')
             self.canvas.create_image(0, 6 if bounce else 0, image=entry[1], anchor='nw', tags='char')
             self._cur_photo = entry[1]
@@ -720,17 +722,32 @@ class WhalePet:
 
     def on_right(self, e):
         self.menu.delete(0, 'end')
-        forms = {'standard': '标准 4.0', 'compact': '紧凑 3.3', 'semi-chibi': '半Q 2.8', 'chibi': 'Q版 2.5', 'super-deformed': 'SD 2.1'}
-        fm = tk.Menu(self.menu, tearoff=0, font=('Microsoft YaHei', 10))
-        for fid, name in forms.items():
-            fm.add_command(label=('✔ ' if (self.ctx.get('_settings') or {}).get('form') == fid else '    ') + name,
-                           command=lambda f=fid: self.put_state({'form': f}))
-        self.menu.add_cascade(label='形态', menu=fm)
-        om = tk.Menu(self.menu, tearoff=0, font=('Microsoft YaHei', 10))
-        for o in [{'id': 'maid', 'name': '经典女仆'}, {'id': 'rice', 'name': '白饭专注'}, {'id': 'sticker', 'name': '表情包'}, {'id': 'classic', 'name': '原版鲸鱼'}]:
-            om.add_command(label=('✔ ' if (self.ctx.get('_settings') or {}).get('outfit') == o['id'] else '    ') + o['name'],
-                           command=lambda x=o['id']: self.put_state({'outfit': x}))
-        self.menu.add_cascade(label='换装', menu=om)
+        # 四轴菜单：画风 / 比例 / 形态状态（由资产目录动态生成，无立绘组合不出现）
+        try:
+            cat = safe_get_json('/api/catalog.json', timeout=5)
+        except Exception:
+            cat = None
+        cur_style = (self.ctx.get('style') or {}).get('id')
+        cur_prop = (self.ctx.get('proportion') or {}).get('id')
+        if cat:
+            names = cat.get('stateNames', {})
+            sm = tk.Menu(self.menu, tearoff=0, font=('Microsoft YaHei', 10))
+            for x in cat['styles']:
+                sm.add_command(label=('✔ ' if x['id'] == cur_style else '    ') + x['name'],
+                               command=lambda sid=x['id'], first=x['proportions'][0]['id']: self.put_state({'style': sid, 'proportion': first}))
+            self.menu.add_cascade(label='画风', menu=sm)
+            sd = next((x for x in cat['styles'] if x['id'] == cur_style), cat['styles'][0])
+            pm = tk.Menu(self.menu, tearoff=0, font=('Microsoft YaHei', 10))
+            for x in sd['proportions']:
+                pm.add_command(label=('✔ ' if x['id'] == cur_prop else '    ') + x['name'],
+                               command=lambda sid=sd['id'], pid=x['id']: self.put_state({'style': sid, 'proportion': pid}))
+            self.menu.add_cascade(label='比例', menu=pm)
+            prop_def = next((x for x in sd['proportions'] if x['id'] == cur_prop), sd['proportions'][0])
+            tm = tk.Menu(self.menu, tearoff=0, font=('Microsoft YaHei', 10))
+            for sid in prop_def.get('states', {}):
+                tm.add_command(label=('✔ ' if (self.ctx.get('_settings') or {}).get('manualState') == sid else '    ') + names.get(sid, sid),
+                               command=lambda x=sid: self.put_state({'manual': True, 'manualState': x}))
+            self.menu.add_cascade(label='形态（状态）', menu=tm)
         am = tk.Menu(self.menu, tearoff=0, font=('Microsoft YaHei', 10))
         accs = (self.ctx.get('_settings') or {}).get('accessories') or []
         for aid, name in [('crown_whale', '皇冠'), ('ribbon_royal', '缎带结'), ('flower_ocean', '海蓝花'),

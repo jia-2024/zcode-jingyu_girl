@@ -75,25 +75,34 @@
     return `${m}分${s % 60}秒后`
   }
 
-  // ---- 形态/换装/饰品 ----
-  let accMap = {}
+  // ---- 四轴妆造：画风 / 比例 / 形态(状态) / 装饰（菜单由资产目录动态生成，无立绘的组合不显示） ----
+  let accMap = {}, catalog = null
   async function loadCharacters() {
     try {
       const d = await (await fetch('/api/characters.json')).json()
       if (!d.ok) return
-      const char = d.characters[0]
-      forms = char.forms || {}
-      outfits = char.outfits || []
+      try {
+        const c = await (await fetch('/api/catalog.json')).json()
+        if (c.ok) catalog = c
+      } catch {}
       try {
         const bmd = await (await fetch('/api/body-model.json')).json()
         accMap = bmd.ok ? Object.fromEntries(bmd.bodyModel.accessories.map((a) => [a.id, a.name])) : {}
       } catch {}
       const st = await (await fetch('/api/state.json')).json()
       const cur = st.state || {}
-      $('formRow').innerHTML = Object.entries(forms).map(([id, f]) =>
-        `<span class="chip ${cur.form === id ? 'on' : ''}" onclick="setForm('${id}')">${f.name} ${f.heads}头身</span>`).join('')
-      $('outfitRow').innerHTML = outfits.map((o) =>
-        `<span class="chip warn ${cur.outfit === o.id ? 'on' : ''}" onclick="setOutfit('${o.id}')">👗 ${o.name}</span>`).join('')
+      if (catalog) {
+        const curStyle = cur.style || (catalog.styles[0] || {}).id
+        $('styleRow').innerHTML = catalog.styles.map((x) =>
+          `<span class="chip ${curStyle === x.id ? 'on' : ''}" onclick="setStyle('${x.id}')">🎨 ${x.name}</span>`).join('')
+        const styleDef = catalog.styles.find((x) => x.id === curStyle) || catalog.styles[0]
+        $('propRow').innerHTML = styleDef.proportions.map((x) =>
+          `<span class="chip ${(cur.proportion || '') === x.id ? 'on' : ''}" onclick="setProp('${styleDef.id}','${x.id}')">📐 ${x.name}</span>`).join('')
+        const availStates = new Set(Object.keys(styleDef.proportions.find((x) => x.id === (cur.proportion || styleDef.proportions[0].id))?.states || {}))
+        const names = catalog.stateNames || {}
+        $('stateRow').innerHTML = [...availStates].map((sid) =>
+          `<span class="chip ${cur.manual && cur.manualState === sid ? 'on' : ''}" onclick="setManual(true, '${sid}')">${names[sid] || sid}</span>`).join('')
+      }
       const accs = cur.accessories || []
       $('accRow').innerHTML = Object.entries(accMap).map(([id, name]) =>
         `<span class="chip ${accs.includes(id) ? 'on' : ''}" onclick="toggleAcc('${id}')">🎀 ${name}</span>`).join('') +
@@ -101,9 +110,9 @@
       $('autoChip').classList.toggle('on', !cur.manual)
       $('memeChip').classList.toggle('on', cur.memeBubbles !== false)
       $('petChip').textContent = '🐋 鲸鱼娘：' + (cur.petOn !== false ? '开' : '关')
-      const s = (await (await fetch('/api/settings.json')).json()).settings
-      $('balanceWarn').value = s.balanceWarn
-      $('dailyBudget').value = s.dailyBudget
+      const stg = (await (await fetch('/api/settings.json')).json()).settings
+      $('balanceWarn').value = stg.balanceWarn
+      $('dailyBudget').value = stg.dailyBudget
     } catch {}
   }
   async function putState(patch) {
@@ -111,8 +120,13 @@
     loadCharacters(); pollContext()
   }
   window.putState = putState
-  window.setForm = (f) => putState({ form: f })
-  window.setOutfit = (o) => putState({ outfit: o })
+  window.setStyle = (sid) => {
+    fetch('/api/catalog.json').then((r) => r.json()).then((c) => {
+      const sd = c.styles.find((x) => x.id === sid) || c.styles[0]
+      putState({ style: sid, proportion: sd.proportions[0].id })
+    })
+  }
+  window.setProp = (sid, pid) => putState({ style: sid, proportion: pid })
   window.setManual = (manual, s) => putState({ manual, manualState: s || null })
   window.toggleMeme = () => putState({ memeBubbles: $('memeChip').classList.contains('on') ? false : true })
   window.togglePet = () => putState({ petOn: $('petChip').textContent.includes('开') ? false : true })

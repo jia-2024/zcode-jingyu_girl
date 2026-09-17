@@ -1,0 +1,84 @@
+{
+  "desc": "鲸鱼娘四轴妆造目录：画风 style × 比例 proportion × 状态 state（+装饰 decoration 单轴）。所有菜单由此数据驱动生成——没有立绘的组合不出现按钮。路径相对 assets/characters/deepseek/。",
+  "styles": [
+    {
+      "id": "maid",
+      "name": "经典女仆画风",
+      "source": "whalechan 参考图 + 知乎设定卡抠图（与设定卡同源画风）",
+      "proportions": [
+        { "id": "standard", "name": "标准 4.0头身", "heads": 4.0, "states": {
+          "idle": "forms/standard/idle.png", "working": "forms/standard/working.png", "rest": "forms/standard/rest.png"
+        } },
+        { "id": "tall", "name": "高挑 4.2头身", "heads": 4.2, "states": {
+          "idle": "forms/standard/tall.png"
+        } },
+        { "id": "compact", "name": "紧凑 3.3头身", "heads": 3.3, "states": {
+          "idle": "forms/compact/idle.png", "working": "forms/compact/working.png", "rest": "forms/compact/rest.png"
+        } },
+        { "id": "semi-chibi", "name": "半Q 2.8头身", "heads": 2.8, "states": {
+          "alert": "forms/semi-chibi/alert.png", "thinking": "forms/semi-chibi/thinking.png", "working": "forms/semi-chibi/working.png"
+        } },
+        { "id": "chibi", "name": "Q版 2.5头身", "heads": 2.5, "states": {
+          "happy": "forms/chibi/happy.png", "angry": "forms/chibi/angry.png"
+        } },
+        { "id": "super-deformed", "name": "超Q SD 2.1头身", "heads": 2.1, "states": {
+          "happy": "forms/super-deformed/happy.png", "sad": "forms/super-deformed/sad.png", "error": "forms/super-deformed/error.png"
+        } }
+      ]
+    },
+    {
+      "id": "aihand",
+      "name": "AI 手绘风",
+      "source": "CogView-4 按身份块生成（2026-09 批次）",
+      "proportions": [
+        { "id": "standard", "name": "标准 4.0头身", "heads": 4.0, "states": {
+          "happy": "forms/standard/happy.png", "sad": "forms/standard/sad.png", "angry": "forms/standard/angry.png"
+        } },
+        { "id": "compact", "name": "紧凑 3.3头身", "heads": 3.3, "states": {
+          "happy": "forms/compact/happy.png", "sad": "forms/compact/sad.png", "angry": "forms/compact/angry.png", "sleeping": "forms/compact/sleeping.png"
+        } },
+        { "id": "semi-chibi", "name": "半Q 2.8头身", "heads": 2.8, "states": {
+          "idle": "forms/semi-chibi/idle.png", "happy": "forms/semi-chibi/happy.png", "sad": "forms/semi-chibi/sad.png",
+          "angry": "forms/semi-chibi/angry.png", "sleeping": "forms/semi-chibi/sleeping.png", "working": "forms/semi-chibi/working2.png",
+          "beg": "forms/semi-chibi/beg.png", "guilty": "forms/semi-chibi/guilty.png"
+        } },
+        { "id": "chibi", "name": "Q版 2.5头身", "heads": 2.5, "states": {
+          "sad": "forms/chibi/sad.png", "eating": "forms/chibi/eating-ai.png"
+        } },
+        { "id": "super-deformed", "name": "超Q SD 2.1头身", "heads": 2.1, "states": {
+          "angry": "forms/super-deformed/angry.png"
+        } }
+      ]
+    },
+    {
+      "id": "classicwhale",
+      "name": "原版鲸鱼",
+      "source": "dsh-whale-widget 初代挂件形象（MIT）",
+      "proportions": [
+        { "id": "classic", "name": "原版小鲸", "heads": 2.6, "states": {
+          "idle": "forms/classic.png"
+        } }
+      ]
+    },
+    {
+      "id": "sticker",
+      "name": "表情包贴纸",
+      "source": "ChineseBQB#167 / blue-fish-archive 同人贴纸",
+      "proportions": [
+        { "id": "sticker", "name": "贴纸流", "heads": 0, "states": {
+          "idle": "__sticker__"
+        } }
+      ]
+    }
+  ],
+  "stateFallback": {
+    "eating": "idle", "sleeping": "rest", "alert": "idle", "thinking": "idle", "beg": "idle",
+    "guilty": "sad", "error": "sad", "rest": "idle", "working": "idle", "proud": "happy", "confused": "idle",
+    "sad": "idle", "happy": "idle", "angry": "idle"
+  },
+  "stateNames": {
+    "idle": "待机", "happy": "开心", "eating": "干饭", "working": "工作", "thinking": "思考",
+    "sleeping": "睡觉", "sad": "沮丧", "error": "出错", "alert": "讨债", "proud": "傲娇",
+    "confused": "困惑", "angry": "生气", "beg": "乞讨", "guilty": "愧疚", "rest": "休息"
+  }
+}
