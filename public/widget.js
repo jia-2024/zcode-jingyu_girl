@@ -206,10 +206,10 @@
       if (r.ok) loadPresets()
     } catch (e) { $('genMsg').textContent = '失败：' + String(e).slice(0, 60) }
   }
-  window.genPreset = (id) => genMeme({ preset: id })
+  window.genPreset = (id) => genMeme({ preset: id, style: $('genStyle').value, proportion: $('genProp').value })
   window.genMeme = () => {
     const v = $('memePrompt').value.trim()
-    if (v) genMeme({ prompt: v })
+    if (v) genMeme({ prompt: v, style: $('genStyle').value, proportion: $('genProp').value })
   }
 
   window.saveSettings = async () => {

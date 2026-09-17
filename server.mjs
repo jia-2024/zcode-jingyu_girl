@@ -69,7 +69,7 @@ const DEFAULT_STATE = {
   hiddenMenuBtn: false,
   // 鲸鱼娘形象体系：形态（whalechan 5 形态）/ 装扮 / 饰品 / 语境模式
   form: 'semi-chibi', outfit: 'maid', accessories: [], manual: false, manualState: null,
-  memeBubbles: true, petScale: 1.0, petOn: true, weatherCity: '北京',
+  memeBubbles: true, petScale: 1.0, petOn: true, weatherCity: '北京', pillHidden: false,
 }
 let state = { ...DEFAULT_STATE, ...(readJson(FILES.state, {}) || {}) }
 

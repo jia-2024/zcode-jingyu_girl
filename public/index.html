@@ -26,7 +26,7 @@
   .chip{border:1.5px solid var(--sub);border-radius:999px;padding:4px 12px;font-size:12px;cursor:pointer;background:#fff;color:#667}
   .chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
   .chip.warn.on{background:var(--warn);border-color:var(--warn)}
-  #main{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px;max-width:980px}
+  #main{flex:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px;padding:16px}
   .full{grid-column:1/-1}
   .quota-win{margin:8px 0}
   .bar{height:14px;background:#e8ecf7;border-radius:999px;overflow:hidden}
@@ -98,7 +98,9 @@
     <h2>🎨 表情包工坊（CogView-4 AI 生成）</h2>
     <div class="row" id="presetRow" style="justify-content:flex-start"></div>
     <div class="row" style="justify-content:flex-start;margin-top:8px">
-      <input id="memePrompt" placeholder="按要求生成：描述动作/表情，如「一边吃白饭一边看代码」" style="flex:1;min-width:280px;border:1.5px solid #dfe5f3;border-radius:8px;padding:6px 10px;font-size:13px">
+      <select id="genStyle"><option value="canonical">官方设定卡画风</option><option value="aihand">AI 手绘风</option><option value="sticker">贴纸风</option></select>
+      <select id="genProp"><option value="semi-chibi">2.8头身</option><option value="chibi">2.5头身</option><option value="standard">4.0头身</option><option value="compact">3.3头身</option><option value="super-deformed">2.1头身</option><option value="tall">4.2头身</option></select>
+      <input id="memePrompt" placeholder="描述动作/表情，如「一边吃白饭一边看代码」" style="flex:1;min-width:240px;border:1.5px solid #dfe5f3;border-radius:8px;padding:6px 10px;font-size:13px">
       <span class="chip on" onclick="genMeme()">✨ 生成（10~30s）</span>
       <span class="muted" id="genMsg"></span>
     </div>

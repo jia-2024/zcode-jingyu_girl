@@ -243,6 +243,8 @@ class WhalePet:
             pc.create_rectangle(1, 2, 169, 26, fill='#101a30', outline='#3a5aa8', width=2)
             self.pill_text = pc.create_text(85, 14, text='…', font=('Microsoft YaHei', 9, 'bold'), fill='#bcd0ff')
             self.pill_canvas = pc
+            self.pill_hidden = False
+            pc.bind('<Button-1>', self.toggle_pill)
         q = self.ctx.get('quota') or {}
         if q.get('ok') and q.get('windows'):
             parts = [str(w['label']) + ' ' + str(100 - w['usedPct']) + '%' for w in q.get('windows')[:2]]
@@ -254,8 +256,6 @@ class WhalePet:
                 self.pill_canvas.itemconfigure(self.pill_text, text=txt)
             except Exception:
                 pass
-        if not on:
-            self.pill_win.withdraw()
         elif self.root.state() == 'normal':
             self.pill_win.deiconify()
         # 召唤按钮：默认贴 ZCode 底边中央（输入栏旁），可拖拽记忆位置
@@ -308,6 +308,14 @@ class WhalePet:
         self._sdrag = None
         if not moved:
             self.toggle_pet()
+
+    def toggle_pill(self, e=None):
+        self.pill_hidden = not bool((self.ctx.get('_settings') or {}).get('pillHidden', False))
+        self.put_state({'pillHidden': self.pill_hidden})
+        if self.pill_hidden:
+            self.pill_win.withdraw()
+        else:
+            self.pill_win.deiconify()
 
     def toggle_pet(self, e=None):
         # 从服务端读最新开关再翻转（不用 6s 轮询的旧缓存，避免连点打架）
@@ -527,9 +535,14 @@ class WhalePet:
                 c.create_text(BUBBLE_W // 2, ty, text=f"{w['label']}窗口 剩 {100 - w['usedPct']}%" + reset,
                               anchor='n', font=('Microsoft YaHei', 10, 'bold'), fill='#203170')
                 ty += 20
-        if ctx.get('balance'):
-            c.create_text(BUBBLE_W // 2, ty, text=f"DeepSeek ¥{ctx['balance']['totalBalance']:.2f} · 今日 ¥{ctx.get('todayUsage', 0):.2f}",
+        bal = ctx.get('balance')
+        if bal and bal.get('totalBalance') is not None:
+            c.create_text(BUBBLE_W // 2, ty, text=f"DeepSeek ¥{bal['totalBalance']:.2f} · 今日 ¥{ctx.get('todayUsage', 0):.2f}",
                           anchor='n', font=('Microsoft YaHei', 9), fill='#7a8bb8')
+            ty += 18
+        else:
+            c.create_text(BUBBLE_W // 2, ty, text='DeepSeek 余额获取中…', anchor='n',
+                          font=('Microsoft YaHei', 9), fill='#9fb0d9')
             ty += 18
         meme_url = ctx.get('memeUrl')
         if meme_url:
@@ -565,9 +578,14 @@ class WhalePet:
             if y < t + 4:
                 y = py + self.root.winfo_height() + 4
             x = min(max(x, l + 4), r - BUBBLE_W - 4)
+        # 关闭按钮 ✕（右上角）
+        c.create_text(BUBBLE_W - 16, 10, text='✕', font=('Microsoft YaHei', 10, 'bold'), fill='#9fb0d9',
+                      tags='closebtn')
+        c.tag_bind('closebtn', '<Button-1>', lambda e: self.close_bubble())
+        c.tag_bind('closebtn', '<Enter>', lambda e: c.config(cursor='hand2'))
         win.geometry(f'{BUBBLE_W}x{H}+{int(x)}+{int(y)}')
         self.bubble_win = win
-        self.bubble_until = time.time() + 30
+        self.bubble_until = time.time() + 90
 
         gen = (setattr(self, '_bubble_gen', getattr(self, '_bubble_gen', 0) + 1) or self._bubble_gen)
         def auto_close(g=gen):
@@ -579,13 +597,20 @@ class WhalePet:
                 focused = win.focus_get() is not None
             except Exception:
                 pass
-            if not focused and time.time() > self.bubble_until:
+            hover = getattr(self, '_bubble_hover', False)
+            if not focused and not hover and time.time() > self.bubble_until:
                 try: win.destroy()
                 except Exception: pass
                 if self.bubble_win is win: self.bubble_win = None
                 return
             self.root.after(1000, lambda: auto_close(g))
         self.root.after(1000, lambda: auto_close(gen))
+
+    def close_bubble(self):
+        if self.bubble_win:
+            try: self.bubble_win.destroy()
+            except Exception: pass
+            self.bubble_win = None
 
     # ---------- 指令解析 ----------
     def run_command(self, entry):
